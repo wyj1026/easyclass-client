@@ -1,11 +1,12 @@
 import 'package:easy_class/common/class_item.dart';
+import 'package:easy_class/models/class.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ClassDetail extends StatefulWidget {
   ClassDetail({Key key, @required this.rec}) : super(key: key);
 
-  final Rec rec;
+  final Class rec;
 
   @override
   _ClassDetailState createState() {

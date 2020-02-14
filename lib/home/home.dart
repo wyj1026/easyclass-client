@@ -1,7 +1,10 @@
+import 'package:easy_class/common/class_detail.dart';
+import 'package:easy_class/common/class_item.dart';
+import 'package:easy_class/models/class.dart';
 import 'package:easy_class/util/config.dart';
+import 'package:flukit/flukit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:infinite_listview/infinite_listview.dart';
 
 class Home extends StatefulWidget {
 
@@ -19,18 +22,23 @@ class _HomeeState extends State<Home> {
           appBar: new AppBar(
             title: new Text('课程'),
           ),
-          body: InfiniteListView<>(
-            onRetrieveData: (int page, List<> items, bool refresh) async {
-              var data = await get_records();
-              print(data.toString());
-              items.addAll(data);
-              return false;
+          body: InfiniteListView<Class>(
+            onRetrieveData: (int page, List<Class> items, bool refresh) async {
+              var data = new Class();
+              data.class_duration = 16;
+              data.classname = '数据机构';
+              data.avatar_url = 'https://b-ssl.duitang.com/uploads/item/201810/18/20181018162951_kgwzm.thumb.700_0.jpeg';
+              data.id = 1;
+              data.class_date = '周一上午第二节';
+              data.gmt_start = 1579610044222;
+              items.add(data);
+              return true;
             },
             itemBuilder: (List list, int index, BuildContext ctx) {
               return GestureDetector(
-                child: RecordItem(list[index]),
+                child: ClassItem(list[index]),
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => new RecordDetail(
+                    builder: (context) => new ClassDetail(
                       rec: list[index],
                     ))),
               );
