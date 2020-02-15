@@ -1,6 +1,3 @@
-import 'package:easy_class/home/home.dart';
-import 'package:easy_class/index/index.dart';
-import 'package:easy_class/my/my_page.dart';
 import 'package:easy_class/splash/splash_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

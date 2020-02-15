@@ -1,5 +1,5 @@
 
-import 'package:easy_class/home/home.dart';
+import 'package:easy_class/clas/home.dart';
 import 'package:easy_class/homework/homework.dart';
 import 'package:easy_class/message/message.dart';
 import 'package:easy_class/my/my_page.dart';

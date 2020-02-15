@@ -1,10 +1,11 @@
-import 'package:easy_class/common/class_detail.dart';
-import 'package:easy_class/common/class_item.dart';
 import 'package:easy_class/models/class.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:flukit/flukit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'class_detail.dart';
+import 'class_item.dart';
 
 class Home extends StatefulWidget {
 

@@ -23,49 +23,40 @@ class _ClassItemState extends State<ClassItem> {
 
   @override
   Widget build(BuildContext context) {
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0, bottom: 10),
-      child: Material(
-          color: Colors.white,
-          shape: BorderDirectional(
-
-            
-            bottom: BorderSide(
-              color: Theme.of(context).dividerColor,
-              width: .5,
+    return Container(
+      color: Colors.white,
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+      child: Container(
+        color: Colors.grey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            ListTile(
+              dense: true,
+              leading: gmAvatar(
+                widget.clas.avatar_url,
+                width: 40.0,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              title: Text(
+                widget.clas.classname,
+                textScaleFactor: 1.1,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: Text(
+                getTimeDiff(widget.clas.class_duration * 1000),
+                textScaleFactor: 0.9,
+              ),
             ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 0.0, bottom: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                ListTile(
-                  dense: true,
-                  leading: gmAvatar(
-                    widget.clas.avatar_url,
-                    width: 40.0,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  title: Text(
-                    widget.clas.classname,
-                    textScaleFactor: 1.1,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Text(
-                    getTimeDiff(widget.clas.class_duration * 1000),
-                    textScaleFactor: 0.9,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 0, left: 10, right: 10),
-                  child: Text(
-                    widget.clas.classname,
-                  ),
-                ),
+            Container(
+              color: Colors.red,
+              padding: const EdgeInsets.only(top: 0, left: 10, right: 10),
+              child: Text(
+                widget.clas.classname,
+              ),
+            ),
 //                Positioned(
 //                  top: 150,
 //                  child:
@@ -76,16 +67,14 @@ class _ClassItemState extends State<ClassItem> {
 //                  ),
 //                ),
 
-                Divider(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: _buildBottom(),
-                )
-              ],
-            ),
-          )),
+//                Padding(
+//                  padding: const EdgeInsets.only(top: 5),
+//                  child: _buildBottom(),
+//                )
+          ],
+        ),
+      ),
     );
-    //return Text(widget.rec.content);
   }
 
   Widget _buildBottom() {
