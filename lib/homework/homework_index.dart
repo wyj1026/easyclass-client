@@ -18,7 +18,7 @@ class _HomeworkIndexState extends State<HomeworkIndex> {
       child: new Scaffold(
 
         appBar: new AppBar(
-          title: new Text('课程'),
+          title: new Text('作业'),
           backgroundColor: GlobalConfig.themeData.primaryColor,
           bottom: new TabBar(
             labelColor: GlobalConfig.dark == true ? new Color(0xFF63FDD9) : Colors.blue,
