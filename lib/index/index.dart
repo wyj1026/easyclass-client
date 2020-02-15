@@ -1,6 +1,7 @@
 
 import 'package:easy_class/clas/home.dart';
 import 'package:easy_class/homework/homework.dart';
+import 'package:easy_class/homework/homework_index.dart';
 import 'package:easy_class/message/message.dart';
 import 'package:easy_class/my/my_page.dart';
 import 'package:easy_class/util/config.dart';
@@ -52,7 +53,7 @@ class _IndexState extends State<Index> with TickerProviderStateMixin{
 
     _pageList = <StatefulWidget>[
       new Home(),
-      new Homework(),
+      new HomeworkIndex(),
       new Message(),
       new MyPage()
     ];
@@ -97,7 +98,7 @@ class _IndexState extends State<Index> with TickerProviderStateMixin{
           ),
           bottomNavigationBar: bottomNavigationBar
         ),
-//        theme: GlobalConfig.themeData
+        theme: GlobalConfig.themeData
     );
   }
 
