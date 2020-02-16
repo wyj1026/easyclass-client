@@ -1,4 +1,6 @@
 import 'package:easy_class/common/user_view.dart';
+import 'package:easy_class/homework/homework.dart';
+import 'package:easy_class/homework/new_homework.dart';
 import 'package:easy_class/models/class.dart';
 import 'package:easy_class/models/index.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,6 +39,24 @@ class _ClassDetailState extends State<ClassDetail> {
                 .toList()));
   }
 
+  Widget buildFloatingButton() {
+    var data = new Class();
+    data.class_duration = 16;
+    data.classname = '计算机网络第一章节课后';
+    data.avatar_url = 'https://b-ssl.duitang.com/uploads/item/201810/18/20181018162951_kgwzm.thumb.700_0.jpeg';
+    data.id = 1;
+    data.class_date = '周一上午第二节';
+    data.gmt_start = 1579610044222;
+    return new FloatingActionButton(
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => new NewHomework(rec: data) ));
+      },
+      tooltip: '新建作业',
+      child: new Icon(Icons.add),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     User u = new User();
@@ -63,6 +83,7 @@ class _ClassDetailState extends State<ClassDetail> {
         ),
       ),
       bottomNavigationBar: null,
+      floatingActionButton: buildFloatingButton(),
     );
   }
 
