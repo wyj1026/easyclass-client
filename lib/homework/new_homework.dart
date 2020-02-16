@@ -1,5 +1,6 @@
 import 'package:easy_class/homework/homework_item.dart';
 import 'package:easy_class/models/class.dart';
+import 'package:easy_class/question/new_nobj_question.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -114,7 +115,11 @@ class _NewHomeworkState extends State<NewHomework> with TickerProviderStateMixin
                 mini: true,
 //                child: new Icon(icons[index], color: foregroundColor),
                 child: new Text(qs[index]),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => new NewNobjQuestionPage(),
+                      ));
+                },
               ),
             ),
           );
