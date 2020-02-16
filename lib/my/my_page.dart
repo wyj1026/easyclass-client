@@ -1,3 +1,5 @@
+import 'package:easy_class/common/user_view.dart';
+import 'package:easy_class/models/index.dart';
 import 'package:easy_class/search/search_page.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:easy_class/util/config.dart' as prefix0;
@@ -89,7 +91,10 @@ class _MyPageState extends State<MyPage> {
                 trailing: IconButton(
                   icon: Icon(Icons.arrow_forward_ios),
                   onPressed: () {
-
+                    User item = new User();
+                    item.nickname = "tegongdete";
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => new UserView(user: item,)));
                   },
                 ),
               ),
