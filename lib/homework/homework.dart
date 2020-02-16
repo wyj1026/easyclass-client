@@ -7,19 +7,19 @@ import 'package:flutter/material.dart';
 
 class Homework extends StatefulWidget {
 
-  Homework(this.onlyShowFinished) :super();
+  Homework(this.stat) :super();
 
-  final bool onlyShowFinished;
+  final int stat;
 
   @override
-  _HomeworkeState createState() => new _HomeworkeState(this.onlyShowFinished);
+  _HomeworkeState createState() => new _HomeworkeState(this.stat);
 
 }
 
 class _HomeworkeState extends State<Homework> {
-  final bool onlyShowFinished;
+  final int stat;
 
-  _HomeworkeState(this.onlyShowFinished) : super();
+  _HomeworkeState(this.stat) : super();
 
   @override
   Widget build(BuildContext context) {

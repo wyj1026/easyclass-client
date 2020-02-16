@@ -14,7 +14,7 @@ class _HomeworkIndexState extends State<HomeworkIndex> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: new Scaffold(
 
         appBar: new AppBar(
@@ -25,14 +25,16 @@ class _HomeworkIndexState extends State<HomeworkIndex> {
             unselectedLabelColor: GlobalConfig.dark == true ? Colors.white : Colors.black,
             tabs: [
               new Tab(text: "待提交"),
-              new Tab(text: "已完成"),
+              new Tab(text: "未批阅"),
+              new Tab(text: "已批阅"),
             ],
           ),
         ),
         body: new TabBarView(
             children: [
-              new Homework(false),
-              new Homework(true),
+              new Homework(0),
+              new Homework(1),
+              new Homework(2)
             ]
         ),
       ),
