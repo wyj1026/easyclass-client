@@ -1,3 +1,4 @@
+import 'package:easy_class/common/self_view.dart';
 import 'package:easy_class/common/user_view.dart';
 import 'package:easy_class/models/index.dart';
 import 'package:easy_class/search/search_page.dart';
@@ -94,7 +95,7 @@ class _MyPageState extends State<MyPage> {
                     User item = new User();
                     item.nickname = "tegongdete";
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => new UserView(user: item,)));
+                        builder: (context) => new SelfView(item)));
                   },
                 ),
               ),
