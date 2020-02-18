@@ -1,9 +1,12 @@
 import 'package:easy_class/common/self_view.dart';
 import 'package:easy_class/common/user_view.dart';
+import 'package:easy_class/login/login_screen.dart';
+import 'package:easy_class/main.dart';
 import 'package:easy_class/models/index.dart';
 import 'package:easy_class/search/search_page.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:easy_class/util/config.dart' as prefix0;
+import 'package:easy_class/util/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -92,10 +95,8 @@ class _MyPageState extends State<MyPage> {
                 trailing: IconButton(
                   icon: Icon(Icons.arrow_forward_ios),
                   onPressed: () {
-                    User item = new User();
-                    item.nickname = "tegongdete";
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => new SelfView(item)));
+                        builder: (context) => new SelfView()));
                   },
                 ),
               ),
@@ -270,7 +271,13 @@ class _MyPageState extends State<MyPage> {
               trailing: IconButton(
                 icon: Icon(Icons.arrow_forward_ios),
                 onPressed: () {
-
+                  Storage.delete();
+                  Navigator.pushAndRemoveUntil(context,
+                      new MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return MyApp();
+                        },
+                      ), (route) => route == null);
                 },
               ),
               onTap: () {
@@ -298,7 +305,13 @@ class _MyPageState extends State<MyPage> {
               trailing: IconButton(
                 icon: Icon(Icons.arrow_forward_ios),
                 onPressed: () {
-
+                  Storage.delete();
+                  Navigator.pushAndRemoveUntil(context,
+                      new MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return MyApp();
+                        },
+                      ), (route) => route == null);
                 },
               ),
               onTap: () {

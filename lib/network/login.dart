@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:easy_class/models/index.dart';
 import 'package:easy_class/util/config.dart';
+import 'package:easy_class/util/storage.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:http_parser/http_parser.dart';
@@ -64,5 +65,19 @@ class LoginClient {
       return User.fromJson(resp["entity"]);
     }
     return null;
+  }
+
+  static Future<bool> update() async {
+    Storage.save(GlobalConfig.user);
+    Dio dio = new Dio();
+    FormData formdata = new FormData.fromMap(GlobalConfig.user.toJson());
+    print(GlobalConfig.user.toJson().toString());
+    var response = await dio.post(GlobalConfig.url + "user/update/", data: formdata);
+    Map resp = response.data;
+    print(resp["msg"]);
+    if (resp["code"] == "200") {
+      return true;
+    }
+    return false;
   }
 }

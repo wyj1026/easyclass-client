@@ -1,25 +1,24 @@
 import 'package:easy_class/models/user.dart';
+import 'package:easy_class/network/login.dart';
 import 'package:easy_class/util/config.dart';
+import 'package:easy_class/util/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SelfView extends StatefulWidget {
-  final User user;
-
   @override
   State createState() {
-    return new SelfViewState(user: this.user);
+    return new SelfViewState();
   }
-
-  SelfView(this.user) : super();
 }
 class SelfViewState extends State<SelfView> {
-  SelfViewState({Key key, @required this.user}) {
-    _nickname.text = this.user.nickname;;
-  }
 
-  final User user;
-  TextEditingController _nickname = new TextEditingController();
+  TextEditingController _name = new TextEditingController(text: GlobalConfig.user.name);
+  TextEditingController _nickname = new TextEditingController(text: GlobalConfig.user.nickname);
+  TextEditingController _email = new TextEditingController(text: GlobalConfig.user.email);
+  TextEditingController _phone = new TextEditingController(text: GlobalConfig.user.phone);
+  TextStyle titleStyle = new TextStyle(fontSize: 20);
+  TextStyle valueStyle = new TextStyle(fontSize: 15);
 
   @override
   Widget build(BuildContext context) {
@@ -27,29 +26,105 @@ class SelfViewState extends State<SelfView> {
       appBar: AppBar(
         title: Text(''),
       ),
-      body: new Center(
-        child: ListTile(
-          title: Text(_nickname.text),
-          leading: new Container(
-            margin: const EdgeInsets.only(bottom: 6.0),
-            child: new CircleAvatar(
-              radius: 20.0,
-              child: new Icon(Icons.message, color: Colors.white),
-              backgroundColor: new Color(0xFFCD853F),
+      body: new Container(
+        color: GlobalConfig.cardBackgroundColor,
+          margin: const EdgeInsets.only(top: 6.0, bottom: 6.0),
+          padding: const EdgeInsets.only(top: 2.0, bottom: 2.0),
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            ListTile(
+              leading: new Container(
+                  margin: const EdgeInsets.only(bottom: 6.0),
+                  child: new Text("名字", style: titleStyle,)
+              ),
+              trailing: new Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  new Text(_name.text, style: valueStyle,),
+                  IconButton(
+                      icon: Icon(Icons.arrow_forward_ios),
+                      onPressed: () async {
+                        await _showDialog(_name);
+                        GlobalConfig.user.name = _name.text;
+                        LoginClient.update();
+                      }
+                  ),
+                ],
+              ),
             ),
-          ),
-          trailing: IconButton(
-            icon: Icon(Icons.arrow_forward_ios),
-            onPressed: () {
-              _showDialog();
-            }
-          ),
-        ),
+            Divider(thickness: 1.0,),
+            ListTile(
+              leading: new Container(
+                  margin: const EdgeInsets.only(bottom: 6.0),
+                  child: new Text("昵称", style: titleStyle,)
+              ),
+              trailing: new Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  new Text(_nickname.text, style: valueStyle,),
+                  IconButton(
+                      icon: Icon(Icons.arrow_forward_ios),
+                      onPressed: () async {
+                        await _showDialog(_nickname);
+                        GlobalConfig.user.nickname = _nickname.text;
+                        LoginClient.update();
+                      }
+                  ),
+                ],
+              ),
+            ),
+            Divider(thickness: 1.0,),
+            ListTile(
+              leading: new Container(
+                  margin: const EdgeInsets.only(bottom: 6.0),
+                  child: new Text("邮件", style: titleStyle,)
+              ),
+              trailing: new Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  new Text(_email.text, style: valueStyle,),
+                  IconButton(
+                      icon: Icon(Icons.arrow_forward_ios),
+                      onPressed: () async {
+                        await _showDialog(_email);
+                        GlobalConfig.user.email = _email.text;
+                        LoginClient.update();
+                      }
+                  ),
+                ],
+              ),
+            ),
+            Divider(thickness: 1.0,),
+            ListTile(
+              leading: new Container(
+                  margin: const EdgeInsets.only(bottom: 6.0),
+                  child: new Text("手机", style: titleStyle,)
+              ),
+              trailing: new Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  new Text(_phone.text, style: valueStyle,),
+                  IconButton(
+                      icon: Icon(Icons.arrow_forward_ios),
+                      onPressed: () async {
+                        await _showDialog(_phone);
+                        GlobalConfig.user.phone = _phone.text;
+                        print(GlobalConfig.user.phone);
+                        LoginClient.update();
+                      }
+                  ),
+                ],
+              ),
+            ),
+          ],
+        )
       ),
     );
   }
 
-  _showDialog() async {
+
+  _showDialog(TextEditingController controller) async {
     await showDialog<Null>(
       context: context,
       barrierDismissible: false,
@@ -62,21 +137,21 @@ class SelfViewState extends State<SelfView> {
                 new Expanded(
                   child: new TextField(
                     autofocus: true,
-                    controller: _nickname,
-                    decoration: new InputDecoration(
-                        labelText: 'Full Name', hintText: 'eg. John Smith'),
+                    controller: controller,
+//                    decoration: new InputDecoration(
+//                        labelText: 'Full Name', hintText: 'eg. John Smith'),
                   ),
                 )
               ],
             ),
             actions: <Widget>[
               new FlatButton(
-                  child: const Text('CANCEL'),
+                  child: const Text('取消'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   }),
               new FlatButton(
-                  child: const Text('OPEN'),
+                  child: const Text('确定'),
                   onPressed: () {
                     Navigator.pop(context);
                   })
