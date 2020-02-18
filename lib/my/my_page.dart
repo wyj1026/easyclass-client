@@ -83,11 +83,11 @@ class _MyPageState extends State<MyPage> {
                 ),
                 title: new Container(
                   margin: const EdgeInsets.only(bottom: 2.0),
-                  child: new Text("特工的特", style: titleFont,),
+                  child: new Text(GlobalConfig.user.nickname, style: titleFont,),
                 ),
                 subtitle: new Container(
                   margin: const EdgeInsets.only(top: 2.0),
-                  child: new Text("wangyijieim@outlook.com", style: subTitleFont,),
+                  child: new Text(GlobalConfig.user.email, style: subTitleFont,),
                 ),
                 trailing: IconButton(
                   icon: Icon(Icons.arrow_forward_ios),

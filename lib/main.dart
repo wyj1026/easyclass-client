@@ -1,11 +1,12 @@
 import 'package:easy_class/splash/splash_widget.dart';
+import 'package:easy_class/util/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login/login_screen.dart';
 
 void main() {
-  SharedPreferences.setMockInitialValues({});
+//  SharedPreferences.setMockInitialValues({});
   runApp(MyApp());
 }
 
@@ -38,16 +39,17 @@ class _StartAppState extends State<StartAppWidget>{
 
   var loginState = 0;
 
+  @override
   void initState(){
-    super.initState();
     _validateLogin();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context){
     if(loginState == 0){
       return SplashWidget();
-    }else{
+    } else{
       return Container(
         child: LoginScreen1(
           primaryColor: Color(0xFF4aa0d5),
@@ -59,25 +61,16 @@ class _StartAppState extends State<StartAppWidget>{
   }
 
   Future _validateLogin() async{
-    Future<dynamic> future = Future(()async{
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      return prefs.containsKey("isLogin");
-    });
-    future.then((val){
-      if(val == true){
-        setState(() {
-          loginState = 0;
-        });
-      }else{
-        setState(() {
-          loginState = 1;
-        });
-      }
-    }).catchError((e){
-      print(e.toString());
-      print("catchError");
-    });
-
+    if (await Storage.is_login()) {
+      setState(() {
+        loginState = 0;
+      });
+    }
+    else {
+      setState(() {
+        loginState = 1;
+      });
+    }
   }
 
 }

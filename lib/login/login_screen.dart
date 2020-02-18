@@ -1,11 +1,18 @@
 import 'package:easy_class/index/index.dart';
+import 'package:easy_class/models/index.dart';
+import 'package:easy_class/network/login.dart';
+import 'package:easy_class/util/config.dart';
+import 'package:easy_class/util/storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen1 extends StatelessWidget {
 
   final Color primaryColor;
   final Color backgroundColor;
   final AssetImage backgroundImage;
+  TextEditingController _emailController = new TextEditingController(text: "test@qq.com");
+  TextEditingController _pwdController = new TextEditingController(text: "test");
 
   LoginScreen1({
     Key key,
@@ -89,6 +96,7 @@ class LoginScreen1 extends StatelessWidget {
                 ),
                 new Expanded(
                   child: TextField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Enter your email',
@@ -134,6 +142,7 @@ class LoginScreen1 extends StatelessWidget {
                 ),
                 new Expanded(
                   child: TextField(
+                    controller: _pwdController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Enter your password',
@@ -181,14 +190,22 @@ class LoginScreen1 extends StatelessWidget {
                                 Icons.arrow_forward,
                                 color: this.primaryColor,
                               ),
-                              onPressed: () => {
-                                print(123),
+                              onPressed: () async {
+                                User usr;
+                                usr = await LoginClient.tryLogin(_emailController.text, _pwdController.text);
+                                if (usr == null) {
+                                  Fluttertoast.showToast(msg: "为您创建账号～");
+                                  usr = await LoginClient.signUp(_emailController.text, _pwdController.text);
+                                  Fluttertoast.showToast(msg: usr.id.toString());
+                                }
+                                Storage.save(usr);
+                                GlobalConfig.user = usr;
                                 Navigator.pushAndRemoveUntil(context,
                                   new MaterialPageRoute(
                                     builder: (BuildContext context) {
                                       return new Index();
                                     },
-                                  ), (route) => route == null)
+                                  ), (route) => route == null);
                               },
                             ),
                           ),

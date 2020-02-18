@@ -1,7 +1,10 @@
+import 'package:easy_class/models/user.dart';
 import 'package:flutter/material.dart';
 
 class GlobalConfig {
-  static const String serverUrl = "http://123.206.45.190:5000/";
+  static User user = null;
+  static const String url = "http://192.168.1.104:9000/";
+//  static const String url = "http://123.206.45.190:5000/";
   static Color primaryColor = Colors.white;
   static bool dark = false;
   static ThemeData themeData = new ThemeData(
