@@ -4,5 +4,6 @@
   "@JsonKey(name: 'classDate') String": "class_date",
   "@JsonKey(name: 'gmtStart') num": "gmt_start",
   "@JsonKey(name: 'avatarUrl') String": "avatar_url",
-  "@JsonKey(name: 'classDuration') String": "class_duration"
+  "@JsonKey(name: 'classDuration') String": "class_duration",
+  "description": "1"
 }

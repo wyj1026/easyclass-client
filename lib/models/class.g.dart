@@ -13,7 +13,8 @@ Class _$ClassFromJson(Map<String, dynamic> json) {
     ..class_date = json['classDate'] as String
     ..gmt_start = json['gmtStart'] as num
     ..avatar_url = json['avatarUrl'] as String
-    ..class_duration = json['classDuration'] as String;
+    ..class_duration = json['classDuration'] as String
+    ..description = json['description'] as String;
 }
 
 Map<String, dynamic> _$ClassToJson(Class instance) => <String, dynamic>{
@@ -22,5 +23,6 @@ Map<String, dynamic> _$ClassToJson(Class instance) => <String, dynamic>{
       'classDate': instance.class_date,
       'gmtStart': instance.gmt_start,
       'avatarUrl': instance.avatar_url,
-      'classDuration': instance.class_duration
+      'classDuration': instance.class_duration,
+      'description': instance.description
     };

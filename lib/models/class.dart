@@ -12,6 +12,7 @@ class Class {
     @JsonKey(name: 'gmtStart') num gmt_start;
     @JsonKey(name: 'avatarUrl') String avatar_url;
     @JsonKey(name: 'classDuration') String class_duration;
+    String description;
     
     factory Class.fromJson(Map<String,dynamic> json) => _$ClassFromJson(json);
     Map<String, dynamic> toJson() => _$ClassToJson(this);
