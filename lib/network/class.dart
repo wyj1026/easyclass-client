@@ -14,11 +14,21 @@ class ClassClient {
   static Future<List<Class>> getAllMyClass() async {
     prefix0.Utf8Decoder utf8decoder = new Utf8Decoder();
     var client = http.Client();
-    http.Response response = await client.get(GlobalConfig.url + "class/getBatchByUserId/?id=1");
+    http.Response response = await client.get(GlobalConfig.url + "class/getBatchByUserId/?id=" + GlobalConfig.user.id.toString());
     print(utf8decoder.convert(response.bodyBytes));
     Iterable l = json.decode(utf8decoder.convert(response.bodyBytes))["entity"];
     List<Class> recs = l.map((model) => Class.fromJson(model)).toList();
     return recs;
+  }
+
+  static Future<Class> getById(String id) async {
+    prefix0.Utf8Decoder utf8decoder = new Utf8Decoder();
+    var client = http.Client();
+    print("id is:" + id);
+    http.Response response = await client.get(GlobalConfig.url + "class/getById/?id=" + id);
+    print(utf8decoder.convert(response.bodyBytes));
+    Map l = json.decode(utf8decoder.convert(response.bodyBytes))["entity"];
+    return Class.fromJson(l);
   }
 
   static Future<List<Class>> searchByName(String name) async {

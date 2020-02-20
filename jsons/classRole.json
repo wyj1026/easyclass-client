@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "@JsonKey(name: 'userId') num": "user_id",
+  "classname": "数据结构",
+  "username": "ab",
+  "school": "ab",
+  "role": "ab",
+  "@JsonKey(name: 'classId') num": "class_id"
+}

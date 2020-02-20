@@ -1,3 +1,4 @@
+import 'package:easy_class/clas/enter_class.dart';
 import 'package:easy_class/clas/new_class.dart';
 import 'package:easy_class/models/class.dart';
 import 'package:easy_class/network/class.dart';
@@ -69,11 +70,81 @@ class _HomeeState extends State<Home> with TickerProviderStateMixin {
     );
   }
 
-  void onSelectedOption(String option) {
+  TextEditingController _name = new TextEditingController();
+
+  void onSelectedOption(String option) async {
     if (option == "新增课程") {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => new NewClass()
       ));
     }
+    else if (option == "加入课程") {
+      bool res = await _showDialog(_name, TextInputType.number);
+      if (!res) {
+        return;
+      }
+      Class cas = await ClassClient.getById(_name.text);
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => new EnterClass(rec: cas,)
+      ));
+    }
+  }
+
+
+  Future<bool> _showDialog(TextEditingController controller, TextInputType kbt) async {
+    await showDialog<Null>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return new _SystemPadding(
+          child: new AlertDialog(
+            contentPadding: const EdgeInsets.all(16.0),
+            content: new Row(
+              children: <Widget>[
+                new Expanded(
+                  child: new TextField(
+                    keyboardType: kbt,
+                    autofocus: true,
+                    controller: controller,
+//                    decoration: new InputDecoration(
+//                        labelText: 'Full Name', hintText: 'eg. John Smith'),
+                  ),
+                )
+              ],
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                  child: const Text('取消'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    return false;
+                  }),
+              new FlatButton(
+                  child: const Text('确定'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    return true;
+                  })
+            ],
+          ),);
+      },
+    );
+  }
+}
+
+
+
+class _SystemPadding extends StatelessWidget {
+  final Widget child;
+
+  _SystemPadding({Key key, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+    return new AnimatedContainer(
+        padding: mediaQuery.viewInsets,
+        duration: const Duration(milliseconds: 300),
+        child: child);
   }
 }
