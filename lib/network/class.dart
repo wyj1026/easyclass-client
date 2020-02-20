@@ -4,6 +4,7 @@ import 'dart:convert' as prefix0;
 import 'package:dio/dio.dart';
 import 'package:easy_class/models/index.dart';
 import 'package:easy_class/util/config.dart';
+import 'package:easy_class/util/storage.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:uuid/uuid.dart';
@@ -12,6 +13,9 @@ var uuid = new Uuid();
 
 class ClassClient {
   static Future<List<Class>> getAllMyClass() async {
+    if (GlobalConfig.user == null) {
+      await Storage.is_login();
+    }
     prefix0.Utf8Decoder utf8decoder = new Utf8Decoder();
     var client = http.Client();
     http.Response response = await client.get(GlobalConfig.url + "class/getBatchByUserId/?id=" + GlobalConfig.user.id.toString());
