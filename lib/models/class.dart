@@ -8,10 +8,10 @@ class Class {
 
     num id;
     String classname;
-    String class_date;
-    num gmt_start;
-    String avatar_url;
-    num class_duration;
+    @JsonKey(name: 'classDate') String class_date;
+    @JsonKey(name: 'gmtStart') num gmt_start;
+    @JsonKey(name: 'avatarUrl') String avatar_url;
+    @JsonKey(name: 'classDuration') String class_duration;
     
     factory Class.fromJson(Map<String,dynamic> json) => _$ClassFromJson(json);
     Map<String, dynamic> toJson() => _$ClassToJson(this);

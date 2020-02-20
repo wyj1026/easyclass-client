@@ -1,8 +1,8 @@
 {
   "id": 1,
   "classname": "数据结构",
-  "class_date": "周一上午第二节",
-  "gmt_start": 1579610044222,
-  "avatar_url": "https://b-ssl.duitang.com/uploads/item/201810/18/20181018162951_kgwzm.thumb.700_0.jpeg",
-  "class_duration": 16
+  "@JsonKey(name: 'classDate') String": "class_date",
+  "@JsonKey(name: 'gmtStart') num": "gmt_start",
+  "@JsonKey(name: 'avatarUrl') String": "avatar_url",
+  "@JsonKey(name: 'classDuration') String": "class_duration"
 }

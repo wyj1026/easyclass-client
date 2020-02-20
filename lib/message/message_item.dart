@@ -46,7 +46,7 @@ class _MessageItemState extends State<MessageItem> {
                 ),
               ),
               subtitle: Text(
-                getTimeDiff(widget.clas.class_duration * 1000),
+                getTimeDiff(num.parse(widget.clas.class_duration)),
                 textScaleFactor: 0.9,
               ),
             ),

@@ -46,7 +46,7 @@ class _HomeworkItemState extends State<HomeworkItem> {
                 ),
               ),
               subtitle: Text(
-                getTimeDiff(widget.clas.class_duration * 1000),
+                getTimeDiff(num.parse(widget.clas.class_duration)),
                 textScaleFactor: 0.9,
               ),
             ),

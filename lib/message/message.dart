@@ -24,7 +24,7 @@ class _MessageState extends State<Message> {
           body: InfiniteListView<Class>(
             onRetrieveData: (int page, List<Class> items, bool refresh) async {
               var data = new Class();
-              data.class_duration = 16;
+              data.class_duration = "16";
               data.classname = '您有一项作业即将截止，点击查看～';
               data.avatar_url = 'https://b-ssl.duitang.com/uploads/item/201810/18/20181018162951_kgwzm.thumb.700_0.jpeg';
               data.id = 1;
