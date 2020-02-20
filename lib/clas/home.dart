@@ -1,9 +1,11 @@
+import 'package:easy_class/clas/new_class.dart';
 import 'package:easy_class/models/class.dart';
 import 'package:easy_class/network/class.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:flukit/flukit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 import 'class_detail.dart';
 import 'class_item.dart';
@@ -15,7 +17,8 @@ class Home extends StatefulWidget {
 
 }
 
-class _HomeeState extends State<Home> {
+class _HomeeState extends State<Home> with TickerProviderStateMixin {
+  static const List<String> barOption = <String>["加入课程", "新增课程"];
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +26,19 @@ class _HomeeState extends State<Home> {
         home: new Scaffold(
           appBar: new AppBar(
             title: new Text('课程'),
+            actions: <Widget>[
+              PopupMenuButton<String>(
+                onSelected: onSelectedOption,
+                itemBuilder: (BuildContext context) {
+                  return barOption.map( (String option) {
+                    return PopupMenuItem(
+                      value: option,
+                      child: Text(option),
+                    );
+                  }).toList();
+                }
+              )
+            ],
           ),
           body: InfiniteListView<Class>(
             onRetrieveData: (int page, List<Class> items, bool refresh) async {
@@ -49,7 +65,15 @@ class _HomeeState extends State<Home> {
           ),
         ),
         theme: GlobalConfig.themeData
+
     );
   }
 
+  void onSelectedOption(String option) {
+    if (option == "新增课程") {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => new NewClass()
+      ));
+    }
+  }
 }
