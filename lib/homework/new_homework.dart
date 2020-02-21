@@ -27,7 +27,7 @@ class _NewHomeworkState extends State<NewHomework> with TickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(''),
+          title: Text('新建作业'),
         ),
         body: ConstrainedBox(
           constraints: BoxConstraints.expand(),

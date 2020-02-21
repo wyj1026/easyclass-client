@@ -47,13 +47,13 @@ class _ClassDetailState extends State<ClassDetail> {
     data.id = 1;
     data.class_date = '周一上午第二节';
     data.gmt_start = 1579610044222;
-    return new FloatingActionButton(
+    return new IconButton(
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => new NewHomework(rec: data) ));
       },
       tooltip: '新建作业',
-      child: new Icon(Icons.add),
+      icon: new Icon(Icons.add),
     );
   }
 
@@ -65,6 +65,9 @@ class _ClassDetailState extends State<ClassDetail> {
     return Scaffold(
       appBar: AppBar(
         title: Text(''),
+        actions: <Widget>[
+          buildFloatingButton()
+        ],
       ),
       body: ConstrainedBox(
         constraints: BoxConstraints.expand(),
@@ -83,7 +86,6 @@ class _ClassDetailState extends State<ClassDetail> {
         ),
       ),
       bottomNavigationBar: null,
-      floatingActionButton: buildFloatingButton(),
     );
   }
 
