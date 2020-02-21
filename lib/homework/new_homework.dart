@@ -31,6 +31,7 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
   String title;
 
   _NewHomeworkWithTitleState(this.title);
+  List<Question> questions = new List();
 
   @override
   Widget build(BuildContext context) {
@@ -56,23 +57,35 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
               margin: const EdgeInsets.all(16.0),
             ),
           Flexible(
-            child: InfiniteListView<Question>(
-              onRetrieveData: (int page, List<Question> items, bool refresh) async {
-                var data = new Question();
-                data.id = 1;
-                data.class_id = 1;
-                data.classname = "数据";
-                data.question = ".如果阿客户的反馈";
-                data.gmt_create = 1579610044222;
-                items.add(data);
-                return true;
-              },
-              itemBuilder: (List<Question> list, int index, BuildContext ctx) {
-                return ExpansionTile(
-                  title: new Text(index.toString() + list[index].question),
-                );
-              },
-            ),
+            child: ListView(
+              children:
+                questions.map((q) => new Text(q.question)).toList()
+            )
+
+//            InfiniteListView<Question>(
+//              onRetrieveData: (int page, List<Question> items, bool refresh) async {
+//                print("FETCH DATA");
+//                var data = new Question();
+//                data.id = 1;
+//                data.class_id = 1;
+//                data.classname = "数据";
+//                data.question = ".如果阿客户的反馈";
+//                data.gmt_create = 1579610044222;
+////                items.add(data);
+//                if (items.length >= questions.length) {
+//                  return false;
+//                }
+//                else {
+//                  items.addAll(questions.sublist(items.length, questions.length));
+//                  return false;
+//                }
+//              },
+//              itemBuilder: (List<Question> list, int index, BuildContext ctx) {
+//                return ExpansionTile(
+//                  title: new Text(index.toString() + list[index].question),
+//                );
+//              },
+//            ),
           ),
           ],
         )
@@ -195,10 +208,20 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
               mini: true,
 //                child: new Icon(icons[index], color: foregroundColor),
               child: new Text(qs[index]),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => new NewNobjQuestionPage(),
-                ));
+              onPressed: () async {
+
+                final data = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NewNobjQuestionPage()),
+                ) as Question;
+                setState(() {
+                  questions = List.from(questions)
+                    ..add(data);
+                });
+
+
+//                Navigator.of(context).push(MaterialPageRoute(
+//                  builder: (context) => new NewNobjQuestionPage(),));
               },
             ),
           ),

@@ -1,3 +1,4 @@
+import 'package:easy_class/models/index.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:flutter/material.dart';
 
@@ -17,9 +18,11 @@ class NewNobjQuestionPageState extends State<NewNobjQuestionPage> {
           actions: <Widget>[
             FlatButton(
               textColor: Colors.white,
-              onPressed: () => {
+              onPressed: ()  {
                 //add_record(Main.user_name, Main.avatarUrl, _controller.text, images),
-                Navigator.of(context).pop()
+                Question q = new Question();
+                q.question = _controller.text;
+                Navigator.of(context).pop(q);
               },
               child: Icon(
                 Icons.check,
@@ -35,6 +38,7 @@ class NewNobjQuestionPageState extends State<NewNobjQuestionPage> {
               new Container(
                 color: Colors.amber,
                 child: new TextField(
+                  controller: _controller,
                   maxLines: 6,
                   autofocus: true,
                   decoration: new InputDecoration(
