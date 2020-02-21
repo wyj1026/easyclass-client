@@ -1,6 +1,6 @@
 import 'package:easy_class/common/user_view.dart';
 import 'package:easy_class/homework/homework.dart';
-import 'package:easy_class/homework/new_homework.dart';
+import 'package:easy_class/homework/new_homework_title.dart';
 import 'package:easy_class/models/class.dart';
 import 'package:easy_class/models/index.dart';
 import 'package:easy_class/network/class.dart';

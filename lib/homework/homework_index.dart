@@ -32,9 +32,9 @@ class _HomeworkIndexState extends State<HomeworkIndex> {
         ),
         body: new TabBarView(
             children: [
-              new Homework(0),
-              new Homework(1),
-              new Homework(2)
+              new HomeworkPage(0),
+              new HomeworkPage(1),
+              new HomeworkPage(2)
             ]
         ),
       ),

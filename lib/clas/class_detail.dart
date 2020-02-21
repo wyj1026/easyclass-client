@@ -1,6 +1,6 @@
 import 'package:easy_class/common/user_view.dart';
 import 'package:easy_class/homework/homework.dart';
-import 'package:easy_class/homework/new_homework.dart';
+import 'package:easy_class/homework/new_homework_title.dart';
 import 'package:easy_class/models/class.dart';
 import 'package:easy_class/models/index.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,7 +50,7 @@ class _ClassDetailState extends State<ClassDetail> {
     return new IconButton(
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => new NewHomework(rec: data) ));
+            builder: (context) => new NewHomeworkTitle() ));
       },
       tooltip: '新建作业',
       icon: new Icon(Icons.add),

@@ -5,9 +5,9 @@ import 'package:easy_class/util/config.dart';
 import 'package:flukit/flukit.dart';
 import 'package:flutter/material.dart';
 
-class Homework extends StatefulWidget {
+class HomeworkPage extends StatefulWidget {
 
-  Homework(this.stat) :super();
+  HomeworkPage(this.stat) :super();
 
   final int stat;
 
@@ -16,7 +16,7 @@ class Homework extends StatefulWidget {
 
 }
 
-class _HomeworkeState extends State<Homework> {
+class _HomeworkeState extends State<HomeworkPage> {
   final int stat;
 
   _HomeworkeState(this.stat) : super();

@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "classname": "a",
+  "@JsonKey(name: 'classId') num": "class_id",
+  "@JsonKey(name: 'homeworkId') num": "homework_id",
+  "@JsonKey(name: 'userId') num": "user_id",
+  "@JsonKey(name: 'objectiveGrage') num": "objective_grage",
+  "@JsonKey(name: 'nonObjectiveGrage') num": "non_objective_grage",
+  "username": "a",
+  "comment": "a"
+}
