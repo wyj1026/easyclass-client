@@ -10,6 +10,7 @@ class Question {
     @JsonKey(name: 'gmtCreate') num gmt_create;
     String classname;
     @JsonKey(name: 'classId') num class_id;
+    @JsonKey(name: 'homeworkId') num homework_id;
     String question;
     Map<String,dynamic> answer;
     num grade;

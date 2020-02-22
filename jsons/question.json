@@ -3,6 +3,7 @@
   "@JsonKey(name: 'gmtCreate') num": "gmt_create",
   "classname": "a",
   "@JsonKey(name: 'classId') num": "class_id",
+  "@JsonKey(name: 'homeworkId') num": "homework_id",
   "question": "1",
   "answer": {
     "options": ["1", "2"],

@@ -40,17 +40,10 @@ class _ClassDetailState extends State<ClassDetail> {
   }
 
   Widget buildFloatingButton() {
-    var data = new Class();
-    data.class_duration = "16";
-    data.classname = '计算机网络第一章节课后';
-    data.avatar_url = 'https://b-ssl.duitang.com/uploads/item/201810/18/20181018162951_kgwzm.thumb.700_0.jpeg';
-    data.id = 1;
-    data.class_date = '周一上午第二节';
-    data.gmt_start = 1579610044222;
     return new IconButton(
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => new NewHomeworkTitle() ));
+            builder: (context) => new NewHomeworkTitle(id: widget.rec.id, classname: widget.rec.classname) ));
       },
       tooltip: '新建作业',
       icon: new Icon(Icons.add),

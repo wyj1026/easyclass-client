@@ -12,6 +12,7 @@ Question _$QuestionFromJson(Map<String, dynamic> json) {
     ..gmt_create = json['gmtCreate'] as num
     ..classname = json['classname'] as String
     ..class_id = json['classId'] as num
+    ..homework_id = json['homeworkId'] as num
     ..question = json['question'] as String
     ..answer = json['answer'] as Map<String, dynamic>
     ..grade = json['grade'] as num
@@ -25,6 +26,7 @@ Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
       'gmtCreate': instance.gmt_create,
       'classname': instance.classname,
       'classId': instance.class_id,
+      'homeworkId': instance.homework_id,
       'question': instance.question,
       'answer': instance.answer,
       'grade': instance.grade,

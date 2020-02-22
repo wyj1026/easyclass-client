@@ -1,65 +1,58 @@
-import 'package:easy_class/homework/homework_item.dart';
-import 'package:easy_class/models/class.dart';
 import 'package:easy_class/models/homework.dart';
 import 'package:easy_class/models/index.dart';
+import 'package:easy_class/network/homework.dart';
+import 'package:easy_class/network/question.dart';
 import 'package:easy_class/question/new_nobj_question.dart';
 import 'package:easy_class/question/new_obj_question.dart';
-import 'package:flukit/flukit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 class NewHomeworkWithTitle extends StatefulWidget {
-  NewHomeworkWithTitle({Key key, @required this.title})
-      : assert(title != null),
+  NewHomeworkWithTitle({Key key, @required this.homework})
+      : assert(homework != null),
         super(key: key);
 
-  String title;
+  Homework homework;
 
   @override
   _NewHomeworkWithTitleState createState() {
-    return new _NewHomeworkWithTitleState(this.title);
+    return new _NewHomeworkWithTitleState(this.homework);
   }
 }
 
 class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
     with TickerProviderStateMixin {
-  TextEditingController _title = new TextEditingController();
   FocusNode focusNode = new FocusNode();
   FocusScopeNode focusScopeNode;
 
-  String title;
+  Homework homework;
 
-  _NewHomeworkWithTitleState(this.title);
+  _NewHomeworkWithTitleState(this.homework);
   List<Question> questions = new List();
-
 
   List<Widget> get(Question question) {
     List<String> options = question.answer["options"];
     List<bool> content = question.answer["content"];
-    return options.map((option) =>
-        new Container(
+    return options
+        .map((option) => new Container(
 //            margin: const EdgeInsets.all(16.0),
             alignment: Alignment(-1.0, 1),
-                color: Colors.blue,
+            color: Colors.blue,
             child: Row(
               children: <Widget>[
                 Checkbox(
                   value: content[options.indexOf(option)],
-                  onChanged: (value) {
-                  },
+                  onChanged: (value) {},
                 ),
-
                 new Expanded(
                   child: Text(option),
                 ),
-
               ],
-            ))
-    ).toList();
+            )))
+        .toList();
   }
-  
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,9 +61,23 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
         actions: <Widget>[
           new IconButton(
               icon: new Icon(Icons.check),
-              onPressed: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => new NewHomeworkWithTitle()));
+              onPressed: () async {
+                homework.question_number = questions.length;
+                homework.total_grade = 0;
+                questions.map((Question q) {
+                  homework.total_grade += q.grade == null ? 0 : q.grade;
+                  return q;
+                });
+                Homework h = await HomeworkClient.addHomework(homework);
+                questions = questions.map((Question q) {
+                  homework.total_grade += q.grade == null ? 0 : q.grade;
+                  q.classname = homework.classname;
+                  q.class_id = homework.class_id;
+                  q.homework_id = h.id;
+                  return q;
+                }).toList();
+
+                QuestionClient.addQuestions(questions);
               })
         ],
       ),
@@ -80,7 +87,7 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
             children: <Widget>[
               Container(
                 color: Colors.amber,
-                child: new Text(title),
+                child: new Text(homework.homework_title),
                 margin: const EdgeInsets.all(16.0),
               ),
               Flexible(
@@ -90,31 +97,23 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   ExpansionTile(
-                                    title: new Text((questions.indexOf(q) + 1).toString() + ". " +  q.question),
+                                    title: new Text(
+                                        (questions.indexOf(q) + 1).toString() +
+                                            ". " +
+                                            q.question),
                                     children: <Widget>[
                                       new Container(
 //                            alignment: Alignment(-1, 1),
                                         color: Colors.red,
                                         child: new Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Offstage(
                                               child: Column(
                                                 children: get(q),
                                               ),
-//                                              child: new Container(
-//                                                alignment: Alignment(-1.0, 1),
-//                                                color: Colors.blue,
-//                                                child: Checkbox(
-//                                                  value: _checkboxSelected,
-//                                                  onChanged: (value) {
-//                                                    setState(() {
-//                                                      _checkboxSelected = value;
-//                                                    });
-//                                                  },
-//                                                ),
-//                                              ),
                                               offstage: !q.is_objective,
                                             ),
                                           ],
@@ -124,117 +123,9 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
                                   ),
                                 ],
                               ))
-                          .toList())
-
-//            InfiniteListView<Question>(
-//              onRetrieveData: (int page, List<Question> items, bool refresh) async {
-//                print("FETCH DATA");
-//                var data = new Question();
-//                data.id = 1;
-//                data.class_id = 1;
-//                data.classname = "数据";
-//                data.question = ".如果阿客户的反馈";
-//                data.gmt_create = 1579610044222;
-////                items.add(data);
-//                if (items.length >= questions.length) {
-//                  return false;
-//                }
-//                else {
-//                  items.addAll(questions.sublist(items.length, questions.length));
-//                  return false;
-//                }
-//              },
-//              itemBuilder: (List<Question> list, int index, BuildContext ctx) {
-//                return ExpansionTile(
-//                  title: new Text(index.toString() + list[index].question),
-//                );
-//              },
-//            ),
-                  ),
+                          .toList())),
             ],
           )),
-
-//      ConstrainedBox(
-//        constraints: BoxConstraints.expand(),
-//        child: Stack(
-//          children: <Widget>[
-//            SingleChildScrollView(
-//                padding: const EdgeInsets.only(top: 8.0),
-//                child: Column(
-//                  children: <Widget>[
-//                      Padding(
-//                        padding: EdgeInsets.all(16.0),
-//                        child: SizedBox(
-//                          height: 200,
-//                          child: Expanded(
-//                            child: Container(
-//                              color: Colors.red,
-//                              child: Text("123"),
-//                            ),
-//                          ),
-//                        ),
-//                      ),
-//                    ConstrainedBox(
-//                      constraints: BoxConstraints(minWidth: double.infinity),
-//                      child: Container(
-////                          color: Colors.amber,
-//                        child: new Text(title),
-//                        margin: const EdgeInsets.all(16.0),
-//                      ),
-//                    ),
-//                    Column(
-//                      mainAxisSize: MainAxisSize.max,
-//                      crossAxisAlignment: CrossAxisAlignment.start,
-//                      children: <Widget>[
-//                        Container(
-//                          color: Colors.red,
-//                          child: Text("123"),
-//                        ),
-//                      ],
-//                    ),
-//                    Container(
-//                      margin: EdgeInsets.all(10.0),
-//                      color: Colors.blue,
-//                      child: Text("123"),
-//                    ),
-//                    ExpansionTile(
-//                      title: new Text("查看全部题目"),
-//                      children: <Widget>[
-//                        Divider(),
-//                        new Text("1.题目A"),
-//                        Divider(),
-//                        new Text("2.题目B"),
-//                        Divider(),
-//                        new Text("3.题目C"),
-//                        new Container(
-////                            alignment: Alignment(-1, 1),
-//                          color: Colors.red,
-//                          child: new Column(
-//                            crossAxisAlignment: CrossAxisAlignment.start,
-//                            children: <Widget>[
-//                              new Text("4.题目D"),
-//                              new Container(
-//                                alignment: Alignment(0.0, 1),
-//                                color: Colors.blue,
-//                                child: Checkbox(
-//                                  value: _checkboxSelected,
-//                                  onChanged: (value) {
-//                                    setState(() {
-//                                      _checkboxSelected = value;
-//                                    });
-//                                  },
-//                                ),
-//                              )
-//                            ],
-//                          ),
-//                        )
-//                      ],
-//                    )
-//                  ],
-//                )),
-//          ],
-//        ),
-//      ),
       bottomNavigationBar: null,
       floatingActionButton: buildFloatingButton(),
     );
@@ -275,9 +166,12 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
                 final data = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => index == 0? NewObjQuestionPage(): NewNobjQuestionPage()),
+                      builder: (context) => index == 0
+                          ? NewObjQuestionPage()
+                          : NewNobjQuestionPage()),
                 ) as Question;
                 if (data != null) {
+                  data.question_number = questions.length + 1;
                   setState(() {
                     questions = List.from(questions)..add(data);
                   });
