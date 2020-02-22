@@ -11,10 +11,11 @@ class Question {
     String classname;
     @JsonKey(name: 'classId') num class_id;
     String question;
-    String answer;
+    Map<String,dynamic> answer;
     num grade;
     @JsonKey(name: 'questionNumber') num question_number;
     @JsonKey(name: 'isObjective') bool is_objective;
+    @JsonKey(name: 'isMultity') bool is_multity;
     
     factory Question.fromJson(Map<String,dynamic> json) => _$QuestionFromJson(json);
     Map<String, dynamic> toJson() => _$QuestionToJson(this);

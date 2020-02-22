@@ -3,6 +3,7 @@ import 'package:easy_class/models/class.dart';
 import 'package:easy_class/models/homework.dart';
 import 'package:easy_class/models/index.dart';
 import 'package:easy_class/question/new_nobj_question.dart';
+import 'package:easy_class/question/new_obj_question.dart';
 import 'package:flukit/flukit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,12 +28,38 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
   FocusNode focusNode = new FocusNode();
   FocusScopeNode focusScopeNode;
 
-  bool _checkboxSelected = true;
   String title;
 
   _NewHomeworkWithTitleState(this.title);
   List<Question> questions = new List();
 
+
+  List<Widget> get(Question question) {
+    List<String> options = question.answer["options"];
+    List<bool> content = question.answer["content"];
+    return options.map((option) =>
+        new Container(
+//            margin: const EdgeInsets.all(16.0),
+            alignment: Alignment(-1.0, 1),
+                color: Colors.blue,
+            child: Row(
+              children: <Widget>[
+                Checkbox(
+                  value: content[options.indexOf(option)],
+                  onChanged: (value) {
+                  },
+                ),
+
+                new Expanded(
+                  child: Text(option),
+                ),
+
+              ],
+            ))
+    ).toList();
+  }
+  
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,19 +75,56 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
         ],
       ),
       body: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: double.infinity),
-        child: Column(
-          children: <Widget>[
-            Container(
-              color: Colors.amber,
-              child: new Text(title),
-              margin: const EdgeInsets.all(16.0),
-            ),
-          Flexible(
-            child: ListView(
-              children:
-                questions.map((q) => new Text(q.question)).toList()
-            )
+          constraints: BoxConstraints(minHeight: double.infinity),
+          child: Column(
+            children: <Widget>[
+              Container(
+                color: Colors.amber,
+                child: new Text(title),
+                margin: const EdgeInsets.all(16.0),
+              ),
+              Flexible(
+                  child: ListView(
+                      children: questions
+                          .map((q) => new Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  ExpansionTile(
+                                    title: new Text((questions.indexOf(q) + 1).toString() + ". " +  q.question),
+                                    children: <Widget>[
+                                      new Container(
+//                            alignment: Alignment(-1, 1),
+                                        color: Colors.red,
+                                        child: new Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Offstage(
+                                              child: Column(
+                                                children: get(q),
+                                              ),
+//                                              child: new Container(
+//                                                alignment: Alignment(-1.0, 1),
+//                                                color: Colors.blue,
+//                                                child: Checkbox(
+//                                                  value: _checkboxSelected,
+//                                                  onChanged: (value) {
+//                                                    setState(() {
+//                                                      _checkboxSelected = value;
+//                                                    });
+//                                                  },
+//                                                ),
+//                                              ),
+                                              offstage: !q.is_objective,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ))
+                          .toList())
 
 //            InfiniteListView<Question>(
 //              onRetrieveData: (int page, List<Question> items, bool refresh) async {
@@ -86,10 +150,9 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
 //                );
 //              },
 //            ),
-          ),
-          ],
-        )
-      ),
+                  ),
+            ],
+          )),
 
 //      ConstrainedBox(
 //        constraints: BoxConstraints.expand(),
@@ -209,17 +272,16 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
 //                child: new Icon(icons[index], color: foregroundColor),
               child: new Text(qs[index]),
               onPressed: () async {
-
                 final data = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NewNobjQuestionPage()),
+                  MaterialPageRoute(
+                      builder: (context) => index == 0? NewObjQuestionPage(): NewNobjQuestionPage()),
                 ) as Question;
-                setState(() {
-                  questions = List.from(questions)
-                    ..add(data);
-                });
-
-
+                if (data != null) {
+                  setState(() {
+                    questions = List.from(questions)..add(data);
+                  });
+                }
 //                Navigator.of(context).push(MaterialPageRoute(
 //                  builder: (context) => new NewNobjQuestionPage(),));
               },

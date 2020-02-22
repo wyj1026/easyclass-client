@@ -3,9 +3,13 @@
   "@JsonKey(name: 'gmtCreate') num": "gmt_create",
   "classname": "a",
   "@JsonKey(name: 'classId') num": "class_id",
-  "question": " 1",
-  "answer": "1",
+  "question": "1",
+  "answer": {
+    "options": ["1", "2"],
+    "content": ["A", "B"]
+  },
   "grade": 1,
   "@JsonKey(name: 'questionNumber') num": "question_number",
-  "@JsonKey(name: 'isObjective') bool": "is_objective"
+  "@JsonKey(name: 'isObjective') bool": "is_objective",
+  "@JsonKey(name: 'isMultity') bool": "is_multity"
 }

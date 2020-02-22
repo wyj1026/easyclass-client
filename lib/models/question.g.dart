@@ -13,10 +13,11 @@ Question _$QuestionFromJson(Map<String, dynamic> json) {
     ..classname = json['classname'] as String
     ..class_id = json['classId'] as num
     ..question = json['question'] as String
-    ..answer = json['answer'] as String
+    ..answer = json['answer'] as Map<String, dynamic>
     ..grade = json['grade'] as num
     ..question_number = json['questionNumber'] as num
-    ..is_objective = json['isObjective'] as bool;
+    ..is_objective = json['isObjective'] as bool
+    ..is_multity = json['isMultity'] as bool;
 }
 
 Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
@@ -28,5 +29,6 @@ Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
       'answer': instance.answer,
       'grade': instance.grade,
       'questionNumber': instance.question_number,
-      'isObjective': instance.is_objective
+      'isObjective': instance.is_objective,
+      'isMultity': instance.is_multity
     };

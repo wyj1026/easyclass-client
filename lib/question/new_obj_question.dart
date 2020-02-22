@@ -1,36 +1,41 @@
 import 'package:easy_class/models/index.dart';
+import 'package:easy_class/util/config.dart';
 import 'package:flutter/material.dart';
 
-class NewNobjQuestionPage extends StatefulWidget {
+class NewObjQuestionPage extends StatefulWidget {
   @override
-  NewNobjQuestionPageState createState() => new NewNobjQuestionPageState();
+  NewObjQuestionPageState createState() => new NewObjQuestionPageState();
 }
 
-class NewNobjQuestionPageState extends State<NewNobjQuestionPage> {
+class NewObjQuestionPageState extends State<NewObjQuestionPage> {
   final TextEditingController _title = new TextEditingController();
   TextEditingController _duration = new TextEditingController();
   TextEditingController _answer = new TextEditingController();
+  bool is_multity = false;
+  List<String> options = new List();
+  List<bool> content = new List();
+
+  List<TextEditingController> _controllers = new List();
+  List<bool> _checkbox = new List();
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: AppBar(
-          title: Text("添加主观题"),
+          title: Text("添加客观题"),
           actions: <Widget>[
             FlatButton(
               textColor: Colors.white,
-              onPressed: ()  {
+              onPressed: () {
+                options.addAll(_controllers.map((f) => f.text).toList());
                 //add_record(Main.user_name, Main.avatarUrl, _controller.text, images),
                 Question q = new Question();
                 q.question = _title.text;
                 q.gmt_create = DateTime.now().millisecondsSinceEpoch;
-                q.is_objective = false;
+                q.is_objective = true;
                 q.grade = int.parse(_duration.text);
-                q.answer = {
-                  "options": [_answer.text],
-                  "content": [true]
-                };
-                q.is_multity = false;
+                q.answer = {"options": options, "content": _checkbox};
+                q.is_multity = is_multity;
                 Navigator.of(context).pop(q);
               },
               child: Icon(
@@ -48,46 +53,75 @@ class NewNobjQuestionPageState extends State<NewNobjQuestionPage> {
                 color: Colors.amber,
                 child: new TextField(
                   controller: _title,
-                  maxLines: 3,
+                  maxLines: 2,
                   autofocus: true,
                   decoration: new InputDecoration(
                       hintText: "请输入题目...", hintStyle: new TextStyle()),
                 ),
                 margin: const EdgeInsets.all(16.0),
               ),
-              new Container(
-                color: Colors.amber,
-                margin: const EdgeInsets.all(16.0),
-                  child: new TextField(
-                maxLines: 6,
-                controller: _answer,
-                decoration: new InputDecoration(
-                    hintText: '请输入参考答案...', hintStyle: new TextStyle(), border: InputBorder.none),
-              )),
-              ListTile(
-                leading: new Container(
-                    margin: const EdgeInsets.only(bottom: 6.0),
-                    child: new Text("分值",)
-                ),
-                trailing: new Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    new Text(_duration.text),
-                    IconButton(
-                        icon: Icon(Icons.arrow_forward_ios),
-                        onPressed: () async {
-                          await _showDialog(_duration, TextInputType.number);
-                        }
-                    ),
-                  ],
+            ]
+              ..addAll(_controllers.map((controller) => get(_controllers.indexOf(controller))).toList())
+              ..add(FlatButton.icon(
+                icon: Icon(Icons.check),
+                color: Colors.blue,
+                label: Text("添加选项"),
+                onPressed: () {
+                  setState(() {
+                    _controllers = List.from(_controllers)..add(new TextEditingController());
+                    _checkbox = List.from(_checkbox)..add(false);
+                  });
+                },
+              ),)
+              ..add(
+                ListTile(
+                  leading: new Container(
+                      margin: const EdgeInsets.only(bottom: 6.0),
+                      child: new Text(
+                        "分值",
+                      )),
+                  trailing: new Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      new Text(_duration.text),
+                      IconButton(
+                          icon: Icon(Icons.arrow_forward_ios),
+                          onPressed: () async {
+                            await _showDialog(_duration, TextInputType.number);
+                          }),
+                    ],
+                  ),
                 ),
               ),
-            ],
           ),
         ));
   }
 
-
+  Widget get(int index) {
+    return new Container(
+        margin: const EdgeInsets.all(16.0),
+        alignment: Alignment(-1.0, 1),
+//                color: Colors.blue,
+        child: Row(
+          children: <Widget>[
+            Checkbox(
+              value: _checkbox[index],
+              onChanged: (value) {
+                setState(() {
+                  _checkbox[index] = value;
+                });
+              },
+            ),
+            new Expanded(
+              child: TextField(
+                controller: _controllers[index],
+                decoration: new InputDecoration(
+                    hintText: "请输入选项...", hintStyle: new TextStyle()),
+              ),
+            )
+          ],
+        ));
+  }
 
   _showDialog(TextEditingController controller, TextInputType kbt) async {
     await showDialog<Null>(
@@ -122,12 +156,12 @@ class NewNobjQuestionPageState extends State<NewNobjQuestionPage> {
                     Navigator.pop(context);
                   })
             ],
-          ),);
+          ),
+        );
       },
     );
   }
 }
-
 
 class _SystemPadding extends StatelessWidget {
   final Widget child;
