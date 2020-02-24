@@ -1,12 +1,13 @@
 import 'package:easy_class/homework/homework_item.dart';
 import 'package:easy_class/models/class.dart';
+import 'package:easy_class/models/homework.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeworkDetail extends StatefulWidget {
   HomeworkDetail({Key key, @required this.rec}) : super(key: key);
 
-  final Class rec;
+  final Homework rec;
 
   @override
   _HomeworkDetailState createState() {

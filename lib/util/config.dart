@@ -17,7 +17,6 @@ class GlobalConfig {
 
   static bool teacherMode = false;
 
-
 }
 
 class UserMode extends ChangeNotifier {

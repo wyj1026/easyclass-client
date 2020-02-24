@@ -24,7 +24,7 @@ class _HomeeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    List<String> barOption = Provider.of<UserMode>(context, listen: false).get()? <String>["加入课程"] : <String>["新增课程"];
+    List<String> barOption = Provider.of<UserMode>(context, listen: false).get()? <String>["新增课程"] : <String>["加入课程"];
     return new MaterialApp(
         home: new Scaffold(
           appBar: new AppBar(

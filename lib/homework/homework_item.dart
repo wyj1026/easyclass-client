@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_class/models/class.dart';
+import 'package:easy_class/models/homework.dart';
 import 'package:easy_class/util/common.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:flutter/foundation.dart';
@@ -7,17 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class HomeworkItem extends StatefulWidget {
-  HomeworkItem(this.clas) : super(key: ValueKey(clas.id));
+  HomeworkItem(this.homework) : super(key: ValueKey(homework.id));
 
-  final Class clas;
+  final Homework homework;
 
   @override
-  _HomeworkItemState createState() => _HomeworkItemState(this.clas);
+  _HomeworkItemState createState() => _HomeworkItemState(this.homework);
 }
 
 class _HomeworkItemState extends State<HomeworkItem> {
 
-  _HomeworkItemState(Class clas) {
+  _HomeworkItemState(Homework clas) {
   }
 
 
@@ -33,20 +34,20 @@ class _HomeworkItemState extends State<HomeworkItem> {
           children: <Widget>[
             ListTile(
               dense: true,
-              leading: gmAvatar(
-                widget.clas.avatar_url,
-                width: 40.0,
-                borderRadius: BorderRadius.circular(20),
-              ),
+//              leading: gmAvatar(
+//                widget.homework.,
+//                width: 40.0,
+//                borderRadius: BorderRadius.circular(20),
+//              ),
               title: Text(
-                widget.clas.classname,
+                widget.homework.classname,
                 textScaleFactor: 1.1,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               subtitle: Text(
-                getTimeDiff(num.parse(widget.clas.class_duration)),
+                getTimeDiff(widget.homework.gmt_create),
                 textScaleFactor: 0.9,
               ),
             ),
@@ -54,7 +55,7 @@ class _HomeworkItemState extends State<HomeworkItem> {
               color: Colors.red,
               padding: const EdgeInsets.only(top: 0, left: 10, right: 10),
               child: Text(
-                widget.clas.classname,
+                widget.homework.classname,
               ),
             ),
 //                Positioned(
@@ -72,36 +73,6 @@ class _HomeworkItemState extends State<HomeworkItem> {
 //                  child: _buildBottom(),
 //                )
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBottom() {
-    const paddingWidth = 10;
-    return IconTheme(
-      data: IconThemeData(
-        color: Colors.grey,
-        size: 20,
-      ),
-      child: DefaultTextStyle(
-        style: TextStyle(color: Colors.grey, fontSize: 12),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Builder(builder: (context) {
-            var children = <Widget>[
-              IconButton(
-                icon: Icon(Icons.favorite_border, color: Colors.red),
-                onPressed: null,
-              ),
-              Text(" ".padRight(paddingWidth)),
-              Icon(Icons.chat_bubble_outline),
-              Text(" " +
-                  widget.clas.class_duration.toString().padRight(paddingWidth)),
-            ];
-
-            return Row(children: children);
-          }),
         ),
       ),
     );

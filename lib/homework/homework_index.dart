@@ -13,9 +13,11 @@ class HomeworkIndex extends StatefulWidget {
 class _HomeworkIndexState extends State<HomeworkIndex> {
   List<String> user_tabs = <String>["待提交", "未批阅", "已批阅"];
   List<String> teacher_tabs = <String>["已发布", "待批阅", "已批阅"];
+
   @override
   Widget build(BuildContext context) {
-    List<String> tabs = Provider.of<UserMode>(context, listen: false).get()? user_tabs: teacher_tabs;
+    List<String> tabs = Provider.of<UserMode>(context, listen: false).get()? teacher_tabs:user_tabs;
+    int base = Provider.of<UserMode>(context, listen: false).get()? 3: 0;
     return DefaultTabController(
       length: 3,
       child: new Scaffold(
@@ -31,9 +33,9 @@ class _HomeworkIndexState extends State<HomeworkIndex> {
         ),
         body: new TabBarView(
             children: [
-              new HomeworkPage(0),
-              new HomeworkPage(1),
-              new HomeworkPage(2)
+              new HomeworkPage(base + 0),
+              new HomeworkPage(base + 1),
+              new HomeworkPage(base + 2)
             ]
         ),
       ),

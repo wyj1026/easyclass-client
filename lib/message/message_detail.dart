@@ -37,7 +37,7 @@ class _MessageDetailState extends State<MessageDetail> {
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Column(
                   children: <Widget>[
-                    HomeworkItem(widget.rec),
+//                    HomeworkItem(widget.rec),
                   ],
                 )
             ),
