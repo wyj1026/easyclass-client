@@ -6,6 +6,7 @@ import 'package:easy_class/message/message.dart';
 import 'package:easy_class/my/my_page.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'navigation_icon_view.dart';
 
@@ -91,15 +92,19 @@ class _IndexState extends State<Index> with TickerProviderStateMixin{
         }
     );
 
-    return new MaterialApp(
-        home: new Scaffold(
-          body: new Center(
-              child: _currentPage
-          ),
-          bottomNavigationBar: bottomNavigationBar
+    return
+      ChangeNotifierProvider(
+        create: (context) => UserMode(),
+        child: new MaterialApp(
+            home: new Scaffold(
+                body: new Center(
+                    child: _currentPage
+                ),
+                bottomNavigationBar: bottomNavigationBar
+            ),
+            theme: GlobalConfig.themeData
         ),
-        theme: GlobalConfig.themeData
-    );
+      );
   }
 
 }

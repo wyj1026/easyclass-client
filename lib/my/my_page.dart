@@ -9,6 +9,7 @@ import 'package:easy_class/util/config.dart' as prefix0;
 import 'package:easy_class/util/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const titleFont = const TextStyle(
   fontSize: 22,
@@ -117,6 +118,37 @@ class _MyPageState extends State<MyPage> {
       padding: const EdgeInsets.only(top: 2.0, bottom: 2.0),
       child: new Column(
         children: <Widget>[
+          new MergeSemantics(
+            child: ListTile(
+              title: Text('教师模式'),
+              leading: new Container(
+                margin: const EdgeInsets.only(bottom: 6.0),
+                child: new CircleAvatar(
+                  radius: 20.0,
+                  child: new Icon(Icons.school, color: Colors.white),
+                  backgroundColor: new Color(0xFFCD853F),
+                ),
+              ),
+              trailing: CupertinoSwitch(
+                value: GlobalConfig.teacherMode,
+                onChanged: (bool value) {
+                  setState(() {
+                    GlobalConfig.teacherMode = !GlobalConfig.teacherMode;
+                    Provider.of<UserMode>(context, listen: false).change();
+                  });
+                },
+              ),
+              onTap: () {
+                setState(() {
+                  //_lights = !_lights;
+                });
+              },
+            ),
+          ),
+          new Divider(
+            thickness: 0.5,
+            indent: 50,
+          ),
           new MergeSemantics(
             child: ListTile(
               title: Text('夜间模式'),

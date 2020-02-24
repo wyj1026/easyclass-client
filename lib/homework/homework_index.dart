@@ -1,6 +1,7 @@
 import 'package:easy_class/homework/homework.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeworkIndex extends StatefulWidget {
 
@@ -10,9 +11,11 @@ class HomeworkIndex extends StatefulWidget {
 }
 
 class _HomeworkIndexState extends State<HomeworkIndex> {
-
+  List<String> user_tabs = <String>["待提交", "未批阅", "已批阅"];
+  List<String> teacher_tabs = <String>["已发布", "待批阅", "已批阅"];
   @override
   Widget build(BuildContext context) {
+    List<String> tabs = Provider.of<UserMode>(context, listen: false).get()? user_tabs: teacher_tabs;
     return DefaultTabController(
       length: 3,
       child: new Scaffold(
@@ -23,11 +26,7 @@ class _HomeworkIndexState extends State<HomeworkIndex> {
           bottom: new TabBar(
             labelColor: GlobalConfig.dark == true ? new Color(0xFF63FDD9) : Colors.blue,
             unselectedLabelColor: GlobalConfig.dark == true ? Colors.white : Colors.black,
-            tabs: [
-              new Tab(text: "待提交"),
-              new Tab(text: "未批阅"),
-              new Tab(text: "已批阅"),
-            ],
+            tabs: tabs.map((t) => new Tab(text: t,)).toList(),
           ),
         ),
         body: new TabBarView(

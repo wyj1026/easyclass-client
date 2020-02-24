@@ -31,6 +31,7 @@ dependencies:
   dio: ^3.0.7
   uuid: ^2.0.4
   multi_image_picker: ^4.5.8
+  provider: ^3.0.0
 
 
 dev_dependencies:

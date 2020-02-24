@@ -6,6 +6,7 @@ import 'package:easy_class/util/config.dart';
 import 'package:flukit/flukit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:math' as math;
 
 import 'class_detail.dart';
@@ -19,10 +20,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeeState extends State<Home> with TickerProviderStateMixin {
-  static const List<String> barOption = <String>["加入课程", "新增课程"];
+//  static const List<String> barOption = <String>["加入课程", "新增课程"];
 
   @override
   Widget build(BuildContext context) {
+    List<String> barOption = Provider.of<UserMode>(context, listen: false).get()? <String>["加入课程"] : <String>["新增课程"];
     return new MaterialApp(
         home: new Scaffold(
           appBar: new AppBar(

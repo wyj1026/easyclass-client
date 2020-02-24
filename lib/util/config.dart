@@ -14,4 +14,21 @@ class GlobalConfig {
   static Color searchBackgroundColor = new Color(0xFFEBEBEB);
   static Color cardBackgroundColor = Colors.white;
   static Color fontColor = Colors.black54;
+
+  static bool teacherMode = false;
+
+
+}
+
+class UserMode extends ChangeNotifier {
+  bool userMode = false;
+
+  bool get() {
+    return userMode;
+  }
+
+  void change() {
+    userMode = !userMode;
+    notifyListeners();
+  }
 }
