@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:photo_view/photo_view.dart';
 
 Widget gmAvatar(String url, {
   double width = 30,
@@ -45,4 +46,20 @@ String getTimeDiff(int timeStamp) {
   else {
     return '刚刚';
   }
+}
+
+Widget getPhotoViewFromAsset(String name) {
+  Container(
+      child: PhotoView(
+        imageProvider: AssetImage("assets/" + name),
+      )
+  );
+}
+
+Widget getPhotoViewFromNet(String url) {
+  Container(
+      child: PhotoView(
+        imageProvider: NetworkImage(url),
+      )
+  );
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class GlobalConfig {
   static User user = null;
-  static const String url = "http://192.168.1.104:9000/";
+  static const String url = "http://192.168.1.103:9000/";
 //  static const String url = "http://123.206.45.190:5000/";
   static Color primaryColor = Colors.white;
   static bool dark = false;

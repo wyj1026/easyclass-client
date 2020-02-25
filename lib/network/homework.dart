@@ -20,6 +20,7 @@ class HomeworkClient {
     "getToJudgeByTeacherUserId",
     "getJudgedByTeacherUserId",
   ];
+
   static Future<List<Homework>> getHomework(int type) async {
     if (GlobalConfig.user == null) {
       await Storage.is_login();
