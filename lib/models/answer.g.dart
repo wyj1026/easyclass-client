@@ -14,8 +14,8 @@ Answer _$AnswerFromJson(Map<String, dynamic> json) {
     ..homework_id = json['homeworkId'] as num
     ..user_id = json['userId'] as num
     ..username = json['username'] as String
-    ..homework_questionId = json['homeworkQuestionId'] as num
-    ..student_question_answer = json['studentQuestionAnswer'] as String
+    ..homework_question_id = json['homeworkQuestionId'] as num
+    ..student_question_answer = json['studentQuestionAnswer'] as List
     ..grade = json['grade'] as num
     ..gmt_upload = json['gmtUpload'] as num
     ..gmt_judge = json['gmtJudge'] as num
@@ -29,7 +29,7 @@ Map<String, dynamic> _$AnswerToJson(Answer instance) => <String, dynamic>{
       'homeworkId': instance.homework_id,
       'userId': instance.user_id,
       'username': instance.username,
-      'homeworkQuestionId': instance.homework_questionId,
+      'homeworkQuestionId': instance.homework_question_id,
       'studentQuestionAnswer': instance.student_question_answer,
       'grade': instance.grade,
       'gmtUpload': instance.gmt_upload,
