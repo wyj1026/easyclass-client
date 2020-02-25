@@ -1,13 +1,17 @@
 import 'package:easy_class/homework/homework_item.dart';
 import 'package:easy_class/models/class.dart';
 import 'package:easy_class/models/homework.dart';
+import 'package:easy_class/models/question.dart';
+import 'package:easy_class/network/question.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeworkDetail extends StatefulWidget {
-  HomeworkDetail({Key key, @required this.rec}) : super(key: key);
+  HomeworkDetail({Key key, @required this.homework, @required this.questions})
+      : super(key: key);
 
-  final Homework rec;
+  final Homework homework;
+  final List<Question> questions;
 
   @override
   _HomeworkDetailState createState() {
@@ -20,65 +24,90 @@ class _HomeworkDetailState extends State<HomeworkDetail> {
   FocusNode focusNode = new FocusNode();
   FocusScopeNode focusScopeNode;
 
-  bool _checkboxSelected = true; //维护单选开关状态
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(''),
         ),
-        body: ConstrainedBox(
-          constraints: BoxConstraints.expand(),
-          child: Stack(
-            children: <Widget>[
-              SingleChildScrollView(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Column(
-                    children: <Widget>[
-                      HomeworkItem(widget.rec),
-                      ExpansionTile(
-                        title: new Text("查看全部题目"),
-                        children: <Widget>[
-                          Divider(),
-                          new Text("1.题目A"),
-                          Divider(),
-                          new Text("2.题目B"),
-                          Divider(),
-                          new Text("3.题目C"),
-                          new Container(
-                            alignment: Alignment(-1.0, 1),
-                            color: Colors.red,
-                            child: new Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                new Text("4.题目D"),
-                                new Container(
-                                  alignment: Alignment(-1.0, 1),
-                                  color: Colors.blue,
-                                  child: Checkbox(
-                                    value: _checkboxSelected,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _checkboxSelected = value;
-                                      });
-                                    },
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  )),
-            ],
-          ),
-        ),
+        body:
+            ConstrainedBox(
+                constraints: BoxConstraints(minHeight: double.infinity),
+                child: Column(
+                  children: <Widget>[
+                    HomeworkItem(widget.homework),
+                    Container(
+                      color: Colors.amber,
+                      child: new Text(widget.homework.homework_title),
+                      margin: const EdgeInsets.all(16.0),
+                    ),
+                    Flexible(
+                        child: ListView(
+                            children: widget.questions
+                                .map((q) => new Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        ExpansionTile(
+                                          title: new Text(
+                                              (widget.questions.indexOf(q) + 1)
+                                                      .toString() +
+                                                  ". " +
+                                                  q.question),
+                                          children: <Widget>[
+                                            new Container(
+//                            alignment: Alignment(-1, 1),
+                                              color: Colors.red,
+                                              child: new Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Offstage(
+                                                    child: Column(
+                                                      children: get(q),
+                                                    ),
+                                                    offstage: !q.is_objective,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ))
+                                .toList())),
+                  ],
+                )),
         bottomNavigationBar: RaisedButton(
           color: Colors.white,
           child: Text("去回答"),
           onPressed: () {},
         ));
+  }
+
+  List<Widget> get(Question question) {
+    print(question.answer);
+    print(question.answer["options"]);
+    List<String> options = new List<String>.from(question.answer["options"]);
+    List<bool> content = new List<bool>.from(question.answer["content"]);
+
+    return options
+        .map((option) => new Container(
+//            margin: const EdgeInsets.all(16.0),
+            alignment: Alignment(-1.0, 1),
+            color: Colors.blue,
+            child: Row(
+              children: <Widget>[
+                Checkbox(
+                  value: content[options.indexOf(option)],
+                  onChanged: (value) {},
+                ),
+                new Expanded(
+                  child: Text(option),
+                ),
+              ],
+            )))
+        .toList();
   }
 }

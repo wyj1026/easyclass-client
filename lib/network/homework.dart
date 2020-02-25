@@ -28,7 +28,6 @@ class HomeworkClient {
     prefix0.Utf8Decoder utf8decoder = new Utf8Decoder();
     var client = http.Client();
     http.Response response = await client.get(GlobalConfig.url + "homework/"+ types[type] + "/?id=" + GlobalConfig.user.id.toString());
-    print(utf8decoder.convert(response.bodyBytes));
     Iterable l = json.decode(utf8decoder.convert(response.bodyBytes))["entity"];
     List<Homework> recs = l.map((model) => Homework.fromJson(model)).toList();
     return recs;
@@ -39,7 +38,6 @@ class HomeworkClient {
     FormData formdata = new FormData.fromMap(homework.toJson());
     var response = await dio.post(GlobalConfig.url + "homework/new/", data: formdata);
     Map resp = response.data;
-    print(resp["msg"]);
     if (resp["code"] == "200") {
       return Homework.fromJson(resp["entity"]);
     }

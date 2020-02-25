@@ -3,6 +3,7 @@ import 'package:easy_class/homework/homework_item.dart';
 import 'package:easy_class/models/class.dart';
 import 'package:easy_class/models/index.dart';
 import 'package:easy_class/network/homework.dart';
+import 'package:easy_class/network/question.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:flukit/flukit.dart';
 import 'package:flutter/material.dart';
@@ -30,16 +31,19 @@ class _HomeworkeState extends State<HomeworkPage> {
         items.addAll(await HomeworkClient.getHomework(stat));
         return false;
       },
-      itemBuilder: (List list, int index, BuildContext ctx) {
+      itemBuilder: (List<Homework> list, int index, BuildContext ctx) {
         return GestureDetector(
           child: HomeworkItem(list[index]),
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+          onTap: ()  async {
+            var qs = await QuestionClient.getQuestionsByHomeworkId(list[index].id);
+            print(qs.toString());
+            Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => new HomeworkDetail(
-                rec: list[index],
-              ))),
+                homework: list[index], questions: qs),
+              ));
+          }
         );
       },
     );
   }
-
 }

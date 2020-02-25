@@ -40,7 +40,7 @@ class _HomeworkItemState extends State<HomeworkItem> {
 //                borderRadius: BorderRadius.circular(20),
 //              ),
               title: Text(
-                widget.homework.classname,
+                widget.homework.id.toString() + widget.homework.classname,
                 textScaleFactor: 1.1,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,

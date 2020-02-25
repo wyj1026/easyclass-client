@@ -18,7 +18,6 @@ class QuestionClient {
     FormData formdata = new FormData.fromMap(question.toJson());
     var response = await dio.post(GlobalConfig.url + "question/new/", data: formdata);
     Map resp = response.data;
-    print(resp["msg"]);
     if (resp["code"] == "200") {
       return Question.fromJson(resp["entity"]);
     }
@@ -37,7 +36,6 @@ class QuestionClient {
               "questions": new List<dynamic>.from(questions.map((x) => x.toJson()))
             });
     Map resp = response.data;
-    print(resp["msg"]);
     if (resp["code"] == "200") {
       return true;
     }
@@ -47,7 +45,7 @@ class QuestionClient {
   static Future<List<Question>> getQuestionsByHomeworkId(int id) async {
     prefix0.Utf8Decoder utf8decoder = new Utf8Decoder();
     var client = http.Client();
-    http.Response response = await client.get(GlobalConfig.url + "question/");
+    http.Response response = await client.get(GlobalConfig.url + "question/getBatchByHomeworkId/?id=" + id.toString());
     print(utf8decoder.convert(response.bodyBytes));
     Iterable l = json.decode(utf8decoder.convert(response.bodyBytes))["entity"];
     List<Question> recs = l.map((model) => Question.fromJson(model)).toList();
