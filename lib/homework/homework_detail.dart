@@ -1,167 +1,36 @@
-import 'package:easy_class/homework/homework_item.dart';
-import 'package:easy_class/models/answer.dart';
-import 'package:easy_class/models/class.dart';
+import 'package:easy_class/homework/detail/student/homework_detail2commit.dart';
 import 'package:easy_class/models/homework.dart';
 import 'package:easy_class/models/question.dart';
-import 'package:easy_class/network/answer.dart';
-import 'package:easy_class/network/question.dart';
-import 'package:easy_class/util/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'detail/student/homework_detail_judged.dart';
+import 'detail/student/homework_detail_not_judged.dart';
+import 'detail/teacher/homework_detail2judge.dart';
+import 'detail/teacher/homework_detail_judged.dart';
+import 'detail/teacher/homework_detail_pubed.dart';
 
-class HomeworkDetail extends StatefulWidget {
-  HomeworkDetail({Key key, @required this.homework, @required this.questions})
-      : super(key: key);
-
-  final Homework homework;
-  final List<Question> questions;
-
-  @override
-  _HomeworkDetailState createState() {
-    return new _HomeworkDetailState(questions);
-  }
-}
-
-class _HomeworkDetailState extends State<HomeworkDetail> {
-  List<TextEditingController> _controllers = new List();
-  List<List<bool>> _check = new List();
-  List<Question> _questions;
-
-  _HomeworkDetailState(List<Question> questions) {
-    print("Questions: "+ questions.length.toString());
-    for (int i = 0; i < questions.length; i++) {
-      _controllers.add(new TextEditingController());
-      _check.add(new List());
+class HomeworkDetail {
+  static Widget get(int stat, Homework homework, List<Question> questions) {
+    if (stat == 0) {
+      return HomeworkDetail2Commit(homework: homework, questions: questions,);
     }
-    _questions = questions;
+    else if (stat == 1) {
+      return HomeworkNotJudgedStudent(homework: homework, questions: questions,);
+    }
+    else if (stat == 2) {
+      return HomeworkJudged(homework: homework, questions: questions,);
+    }
+    else if (stat == 3) {
+      return HomeworkDetailPubed(homework: homework, questions: questions,);
+    }
+    else if (stat == 4) {
+      return HomeworkDetail2Judge(homework: homework, questions: questions,);
+    }
+    else if (stat == 5) {
+      return HomeworkDetailJudgedTeacher(homework: homework, questions: questions,);
+    }
+    else {
+      return null;
+    }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(''),
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.check),
-                onPressed: () async {
-                  List<Answer> answers = _questions.map((q) {
-                    Answer answer = new Answer();
-                    answer.classname = widget.homework.classname;
-                    answer.class_id = widget.homework.class_id;
-                    answer.homework_id = widget.homework.id;
-                    answer.user_id = GlobalConfig.user.id;
-                    answer.username = GlobalConfig.user.name;
-                    answer.homework_question_id = q.id;
-                    answer.student_question_answer = new List();
-                    int index = _questions.indexOf(q);
-                    if (q.is_objective) {
-                      answer.student_question_answer.addAll(_check[index]);
-                    }
-                    else {
-                      answer.student_question_answer.add(_controllers[index].text);
-                    }
-                    answer.gmt_upload = DateTime.now().millisecondsSinceEpoch;
-                    return answer;
-                  }).toList();
-                  AnswerClient.addAnswers(answers);
-                  Navigator.of(context).pop();
-                }
-            ),
-          ],
-        ),
-        body:
-            ConstrainedBox(
-                constraints: BoxConstraints(minHeight: double.infinity),
-                child: Column(
-                  children: <Widget>[
-                    HomeworkItem(widget.homework),
-                    Container(
-                      color: Colors.amber,
-                      child: new Text(widget.homework.homework_title),
-                      margin: const EdgeInsets.all(16.0),
-                    ),
-                    Flexible(
-                        child: ListView(
-                            children: _questions
-                                .map((q) => new Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        ExpansionTile(
-                                          title: new Text(
-                                              (_questions.indexOf(q) + 1)
-                                                      .toString() +
-                                                  ". " +
-                                                  q.question),
-                                          children: <Widget>[
-                                            new Container(
-//                            alignment: Alignment(-1, 1),
-                                              child: new Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Offstage(
-                                                    child: new TextField(
-                                                      controller: _controllers[_questions.indexOf(q)],
-                                                      maxLines: 3,
-                                                      autofocus: false,
-                                                      decoration: new InputDecoration(
-                                                          hintText: "请输入答案...", hintStyle: new TextStyle()),
-                                                    ),
-                                                    offstage: q.is_objective,
-                                                  ),
-                                                  Offstage(
-                                                    child: Column(
-                                                      children: get(q),
-                                                    ),
-                                                    offstage: !q.is_objective,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ))
-                                .toList())),
-                  ],
-                )),
-        bottomNavigationBar: RaisedButton(
-          color: Colors.white,
-          child: Text("去回答"),
-          onPressed: () {},
-        ));
-  }
-
-  List<Widget> get(Question question) {
-    List<String> options = new List<String>.from(question.answer["options"]);
-    List<bool> content = new List<bool>.from(question.answer["content"]);
-    int index = _questions.indexOf(question);
-    _check[index].addAll(content);
-
-    return options
-        .map((option) => new Container(
-//            margin: const EdgeInsets.all(16.0),
-            alignment: Alignment(-1.0, 1),
-            color: Colors.blue,
-            child: Row(
-              children: <Widget>[
-                Checkbox(
-                  value: _check[_questions.indexOf(question)][options.indexOf(option)],
-                  onChanged: (value) {
-                    setState(() {
-                      _check[_questions.indexOf(question)][options.indexOf(option)] = value;
-                    });
-                  },
-                ),
-                new Expanded(
-                  child: Text(option),
-                ),
-              ],
-            )))
-        .toList();
-  }
-
 }
