@@ -198,6 +198,7 @@ class LoginScreen1 extends StatelessWidget {
                                   usr = await LoginClient.signUp(_emailController.text, _pwdController.text);
                                   Fluttertoast.showToast(msg: usr.id.toString());
                                 }
+                                Fluttertoast.showToast(msg: "url:" + usr.avatar_url.toString());
                                 Storage.save(usr);
                                 GlobalConfig.user = usr;
                                 Navigator.pushAndRemoveUntil(context,

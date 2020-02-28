@@ -33,6 +33,51 @@ class HomeworkClient {
     return recs;
   }
 
+  static Future<List<Homework>> getHomeworkAfterDate(int timestamp) async {
+    if (GlobalConfig.user == null) {
+      await Storage.is_login();
+    }
+    prefix0.Utf8Decoder utf8decoder = new Utf8Decoder();
+    var client = http.Client();
+    http.Response response = await client.get(GlobalConfig.url + "homework/after/"+
+        "?id=" + GlobalConfig.user.id.toString() +
+        "&timestamp=" + timestamp.toString()
+    );
+    Iterable l = json.decode(utf8decoder.convert(response.bodyBytes))["entity"];
+    List<Homework> recs = l.map((model) => Homework.fromJson(model)).toList();
+    return recs;
+  }
+
+  static Future<List<Homework>> getHomeworkNearDate(int timestamp) async {
+    if (GlobalConfig.user == null) {
+      await Storage.is_login();
+    }
+    prefix0.Utf8Decoder utf8decoder = new Utf8Decoder();
+    var client = http.Client();
+    http.Response response = await client.get(GlobalConfig.url + "homework/near/"+
+        "?id=" + GlobalConfig.user.id.toString() +
+        "&timestamp=" + timestamp.toString()
+    );
+    Iterable l = json.decode(utf8decoder.convert(response.bodyBytes))["entity"];
+    List<Homework> recs = l.map((model) => Homework.fromJson(model)).toList();
+    return recs;
+  }
+
+  static Future<List<Homework>> getHomeworkStoppedUpload(int timestamp) async {
+    if (GlobalConfig.user == null) {
+      await Storage.is_login();
+    }
+    prefix0.Utf8Decoder utf8decoder = new Utf8Decoder();
+    var client = http.Client();
+    http.Response response = await client.get(GlobalConfig.url + "homework/stop/"+
+        "?id=" + GlobalConfig.user.id.toString() +
+        "&timestamp=" + timestamp.toString()
+    );
+    Iterable l = json.decode(utf8decoder.convert(response.bodyBytes))["entity"];
+    List<Homework> recs = l.map((model) => Homework.fromJson(model)).toList();
+    return recs;
+  }
+
   static Future<Homework> addHomework(Homework homework) async {
     Dio dio = new Dio();
     FormData formdata = new FormData.fromMap(homework.toJson());

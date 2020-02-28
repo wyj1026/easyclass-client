@@ -12,7 +12,7 @@ class User {
     String password;
     String phone;
     String email;
-    String avatar_url;
+    @JsonKey(name: 'avatarUrl') String avatar_url;
     String description;
     
     factory User.fromJson(Map<String,dynamic> json) => _$UserFromJson(json);

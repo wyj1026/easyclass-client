@@ -5,6 +5,6 @@
   "password": "wangyijie",
   "phone": "18810295176",
   "email": "wangyijieim@outlook.com",
-  "avatar_url": "https://b-ssl.duitang.com/uploads/item/201810/18/20181018162951_kgwzm.thumb.700_0.jpeg",
+  "@JsonKey(name: 'avatarUrl') String": "avatar_url",
   "description": "1"
 }

@@ -11,18 +11,15 @@ import 'dart:async';
 class SingleImageView extends StatefulWidget {
 
   @override
-  _SingleImageViewState createState() => _SingleImageViewState(this.url);
+  _SingleImageViewState createState() => _SingleImageViewState();
 
-  String url;
-
-  SingleImageView(this.url);
+  SingleImageView();
 }
 
 class _SingleImageViewState extends State<SingleImageView> {
-  String url;
   bool change = false;
 
-  _SingleImageViewState(this.url);
+  _SingleImageViewState();
 
   @override
   Widget build(BuildContext context) {

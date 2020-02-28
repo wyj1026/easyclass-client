@@ -16,7 +16,7 @@ class GlobalConfig {
   static Color fontColor = Colors.black54;
 
   static bool teacherMode = false;
-
+  static int near = 1000 * 60 * 60 * 24 * 1;
 }
 
 class UserMode extends ChangeNotifier {
