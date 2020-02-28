@@ -15,7 +15,7 @@ class GlobalConfig {
   static Color cardBackgroundColor = Colors.white;
   static Color fontColor = Colors.black54;
 
-  static bool teacherMode = false;
+  static bool stuMode = true;
   static int near = 1000 * 60 * 60 * 24 * 1;
 }
 

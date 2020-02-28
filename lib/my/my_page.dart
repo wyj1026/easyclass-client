@@ -131,10 +131,11 @@ class _MyPageState extends State<MyPage> {
                 ),
               ),
               trailing: CupertinoSwitch(
-                value: GlobalConfig.teacherMode,
+                value: !GlobalConfig.stuMode,
                 onChanged: (bool value) {
                   setState(() {
-                    GlobalConfig.teacherMode = !GlobalConfig.teacherMode;
+                    GlobalConfig.stuMode = !GlobalConfig.stuMode;
+                    Storage.saveUserMode(!value);
                     Provider.of<UserMode>(context, listen: false).change();
                   });
                 },

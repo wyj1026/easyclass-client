@@ -11,6 +11,7 @@ class Storage {
       User u = User.fromJson(json.decode(userString));
       preferences.setInt("login_timestamp", DateTime.now().millisecondsSinceEpoch);
       GlobalConfig.user = u;
+      GlobalConfig.stuMode = preferences.getBool("stuMode");
       return true;
     }
     else{
@@ -23,7 +24,7 @@ class Storage {
     String str = new JsonEncoder.withIndent("    ").convert(user.toJson());
     preferences.setString("user", str);
     preferences.setInt("login_timestamp", DateTime.now().millisecondsSinceEpoch);
-}
+  }
 
   static delete() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -34,5 +35,15 @@ class Storage {
   static Future<int> get_timestamp() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getInt("login_timestamp");
+  }
+
+  static void saveUserMode(bool mode) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool("stuMode", mode);
+  }
+
+  static Future<bool> getUserMode() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool("stuMode");
   }
 }
