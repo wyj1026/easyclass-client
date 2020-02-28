@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:easy_class/my/crop.dart';
+import 'package:easy_class/util/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -44,7 +46,7 @@ class _SingleImageViewState extends State<SingleImageView> {
         ),
         body: Container(
             child: PhotoView(
-              imageProvider: change? FileImage(_image): NetworkImage(url),
+              imageProvider: change? FileImage(_image): NetworkImage(GlobalConfig.user.avatar_url),
             )
         ),
         bottomNavigationBar: null
@@ -55,9 +57,9 @@ class _SingleImageViewState extends State<SingleImageView> {
 
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
+    final newImage = await Navigator.push(context, MaterialPageRoute(builder: (context) => CropImageRoute(image))) as File;
     setState(() {
-      _image = image;
+      _image = newImage;
       change = true;
     });
   }

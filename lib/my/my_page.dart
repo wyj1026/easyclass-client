@@ -6,7 +6,7 @@ import 'package:easy_class/models/index.dart';
 import 'package:easy_class/search/search_page.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:easy_class/util/config.dart' as prefix0;
-import 'package:easy_class/util/image.dart';
+import 'package:easy_class/my/self_image.dart';
 import 'package:easy_class/util/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -83,8 +83,7 @@ class _MyPageState extends State<MyPage> {
                   child: GestureDetector(
                     child: new ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
-                      child: Image.network(
-                          "https://b-ssl.duitang.com/uploads/item/201703/26/20170326161532_aGteC.jpeg"),
+                      child: Image.network(GlobalConfig.user.avatar_url),
                     ),
                     onTap: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => new SingleImageView("https://b-ssl.duitang.com/uploads/item/201703/26/20170326161532_aGteC.jpeg"),
