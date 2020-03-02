@@ -20,11 +20,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeeState extends State<Home> with TickerProviderStateMixin {
-//  static const List<String> barOption = <String>["加入课程", "新增课程"];
 
   @override
   Widget build(BuildContext context) {
-    List<String> barOption = Provider.of<UserMode>(context, listen: false).get()? <String>["新增课程"] : <String>["加入课程"];
+    List<String> barOption = Provider.of<UserMode>(context, listen: false).get()? <String>["加入课程"] : <String>["新增课程"];
     return new MaterialApp(
         home: new Scaffold(
           appBar: new AppBar(
@@ -45,13 +44,6 @@ class _HomeeState extends State<Home> with TickerProviderStateMixin {
           ),
           body: InfiniteListView<Class>(
             onRetrieveData: (int page, List<Class> items, bool refresh) async {
-//              var data = new Class();
-//              data.class_duration = 16;
-//              data.classname = '数据机构';
-//              data.avatar_url = 'https://b-ssl.duitang.com/uploads/item/201810/18/20181018162951_kgwzm.thumb.700_0.jpeg';
-//              data.id = 1;
-//              data.class_date = '周一上午第二节';
-//              data.gmt_start = 1579610044222;
               var data = await ClassClient.getAllMyClass();
               items.addAll(data);
               return false;
@@ -82,9 +74,6 @@ class _HomeeState extends State<Home> with TickerProviderStateMixin {
     }
     else if (option == "加入课程") {
       bool res = await _showDialog(_name, TextInputType.number);
-      if (!res) {
-        return;
-      }
       Class cas = await ClassClient.getById(_name.text);
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => new EnterClass(rec: cas,)

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_class/models/class.dart';
 import 'package:easy_class/util/common.dart';
 import 'package:easy_class/util/config.dart';
@@ -24,53 +23,33 @@ class _ClassItemState extends State<ClassItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-      margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+      color: GlobalConfig.cardBackgroundColor,
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
       child: Container(
-        color: Colors.grey,
+//        color: GlobalConfig.primaryColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ListTile(
               dense: true,
-              leading: gmAvatar(
-                widget.clas.avatar_url,
-                width: 40.0,
-                borderRadius: BorderRadius.circular(20),
-              ),
               title: Text(
-                widget.clas.classname,
-                textScaleFactor: 1.1,
+                widget.clas.school + "——" + widget.clas.classname,
+                textScaleFactor: 1.3,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               subtitle: Text(
-                getTimeDiff(num.parse(widget.clas.class_duration)),
-                textScaleFactor: 0.9,
+                getTimeDiff(widget.clas.gmt_start),
+                textScaleFactor: 1.0,
               ),
             ),
             Container(
-              color: Colors.red,
-              padding: const EdgeInsets.only(top: 0, left: 10, right: 10),
+              padding: const EdgeInsets.only(top: 0, left: 10, right: 10, bottom: 10),
               child: Text(
-                widget.clas.classname,
+                widget.clas.description,
               ),
             ),
-//                Positioned(
-//                  top: 150,
-//                  child:
-//                  SizedBox(
-//                    width: MediaQuery.of(context).size.width,
-//                    height: MediaQuery.of(context).size.width,
-//                    child: buildGridView(),
-//                  ),
-//                ),
-
-//                Padding(
-//                  padding: const EdgeInsets.only(top: 5),
-//                  child: _buildBottom(),
-//                )
           ],
         ),
       ),
