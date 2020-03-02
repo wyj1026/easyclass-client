@@ -57,7 +57,7 @@ class _EnterClassState extends State<EnterClass> {
               padding: const EdgeInsets.only(top: 8.0),
               child: Column(
                 children: <Widget>[
-                  ClassItem(widget.rec),
+//                  ClassItem(widget.rec),
                   buildTeachers(),
                 ],
               ),

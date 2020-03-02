@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:easy_class/models/class.dart';
 import 'package:easy_class/network/class.dart';
+import 'package:easy_class/network/file.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 
@@ -19,6 +23,9 @@ class NewClassState extends State<NewClass> {
   TextEditingController _start = new TextEditingController();
   TextEditingController _duration = new TextEditingController();
   TextEditingController _description = new TextEditingController();
+  TextEditingController _school = new TextEditingController();
+  String avatar_url;
+  File _image;
   TextStyle titleStyle = new TextStyle(fontSize: 20);
   TextStyle valueStyle = new TextStyle(fontSize: 15);
   DateTime selectedDate;
@@ -38,13 +45,16 @@ class NewClassState extends State<NewClass> {
                 aclass.gmt_start = selectedDate.millisecondsSinceEpoch;
                 aclass.class_duration = _duration.text;
                 aclass.description = _description.text;
+                aclass.avatar_url = avatar_url;
+                aclass.school = _school.text;
                 ClassClient.addClass(aclass);
                 Navigator.of(context).pop();
               }
           ),
         ],
       ),
-      body: new Container(
+      body: SingleChildScrollView(
+          child: new Container(
           color: GlobalConfig.cardBackgroundColor,
           margin: const EdgeInsets.only(top: 6.0, bottom: 6.0),
           padding: const EdgeInsets.only(top: 2.0, bottom: 2.0),
@@ -74,6 +84,31 @@ class NewClassState extends State<NewClass> {
               ListTile(
                 leading: new Container(
                     margin: const EdgeInsets.only(bottom: 6.0),
+                    child: new Text("课程介绍图", style: titleStyle,)
+                ),
+                trailing: new Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    _image == null? new Text(""):
+                    new ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.file(_image),
+                    ),
+                    IconButton(
+                        icon: Icon(Icons.arrow_forward_ios),
+                        onPressed: () async {
+                          _image = await ImagePicker.pickImage(source: ImageSource.gallery);
+                          avatar_url = await FileClient.send(_image);
+                          setState(() {});
+                        }
+                    ),
+                  ],
+                ),
+              ),
+              Divider(thickness: 1.0,),
+              ListTile(
+                leading: new Container(
+                    margin: const EdgeInsets.only(bottom: 6.0),
                     child: new Text("上课时间", style: titleStyle,)
                 ),
                 trailing: new Row(
@@ -84,6 +119,26 @@ class NewClassState extends State<NewClass> {
                         icon: Icon(Icons.arrow_forward_ios),
                         onPressed: () async {
                           await _showDialog(_date, TextInputType.text);
+                          setState(() {});
+                        }
+                    ),
+                  ],
+                ),
+              ),
+              Divider(thickness: 1.0,),
+              ListTile(
+                leading: new Container(
+                    margin: const EdgeInsets.only(bottom: 6.0),
+                    child: new Text("学校", style: titleStyle,)
+                ),
+                trailing: new Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new Text(_school.text, style: valueStyle,),
+                    IconButton(
+                        icon: Icon(Icons.arrow_forward_ios),
+                        onPressed: () async {
+                          await _showDialog(_school, TextInputType.text);
                           setState(() {});
                         }
                     ),
@@ -165,6 +220,7 @@ class NewClassState extends State<NewClass> {
               ),
             ],
           )
+      ),
       ),
     );
   }
