@@ -64,6 +64,7 @@ class NewClassState extends State<NewClass> {
                         icon: Icon(Icons.arrow_forward_ios),
                         onPressed: () async {
                           await _showDialog(_name, TextInputType.text);
+                          setState(() {});
                         }
                     ),
                   ],
@@ -83,6 +84,7 @@ class NewClassState extends State<NewClass> {
                         icon: Icon(Icons.arrow_forward_ios),
                         onPressed: () async {
                           await _showDialog(_date, TextInputType.text);
+                          setState(() {});
                         }
                     ),
                   ],
@@ -135,6 +137,7 @@ class NewClassState extends State<NewClass> {
                         icon: Icon(Icons.arrow_forward_ios),
                         onPressed: () async {
                           await _showDialog(_duration, TextInputType.number);
+                          setState(() {});
                         }
                     ),
                   ],
@@ -154,6 +157,7 @@ class NewClassState extends State<NewClass> {
                         icon: Icon(Icons.arrow_forward_ios),
                         onPressed: () async {
                           await _showDialog(_description, TextInputType.text);
+                          setState(() {});
                         }
                     ),
                   ],

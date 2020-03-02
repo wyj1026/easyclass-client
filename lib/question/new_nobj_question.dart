@@ -77,6 +77,7 @@ class NewNobjQuestionPageState extends State<NewNobjQuestionPage> {
                         icon: Icon(Icons.arrow_forward_ios),
                         onPressed: () async {
                           await _showDialog(_duration, TextInputType.number);
+                          setState(() {});
                         }
                     ),
                   ],

@@ -115,6 +115,7 @@ class _HomeworkAnswerDetail2JudgeState extends State<HomeworkAnswerDetail2Judge>
                                                             icon: Icon(Icons.arrow_forward_ios),
                                                             onPressed: () async {
                                                               await _showDialog(_controllersMap[q.id], TextInputType.number);
+                                                              setState(() {});
                                                             }
                                                         ),
                                                       ],

@@ -46,6 +46,7 @@ class SelfViewState extends State<SelfView> {
                       icon: Icon(Icons.arrow_forward_ios),
                       onPressed: () async {
                         await _showDialog(_name);
+                        setState(() {});
                         GlobalConfig.user.name = _name.text;
                         LoginClient.update();
                       }
@@ -67,6 +68,7 @@ class SelfViewState extends State<SelfView> {
                       icon: Icon(Icons.arrow_forward_ios),
                       onPressed: () async {
                         await _showDialog(_nickname);
+                        setState(() {});
                         GlobalConfig.user.nickname = _nickname.text;
                         LoginClient.update();
                       }
@@ -88,6 +90,7 @@ class SelfViewState extends State<SelfView> {
                       icon: Icon(Icons.arrow_forward_ios),
                       onPressed: () async {
                         await _showDialog(_email);
+                        setState(() {});
                         GlobalConfig.user.email = _email.text;
                         LoginClient.update();
                       }
@@ -109,6 +112,7 @@ class SelfViewState extends State<SelfView> {
                       icon: Icon(Icons.arrow_forward_ios),
                       onPressed: () async {
                         await _showDialog(_phone);
+                        setState(() {});
                         GlobalConfig.user.phone = _phone.text;
                         print(GlobalConfig.user.phone);
                         LoginClient.update();
