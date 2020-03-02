@@ -20,7 +20,7 @@ class GlobalConfig {
 }
 
 class UserMode extends ChangeNotifier {
-  bool userMode = false;
+  bool userMode = GlobalConfig.stuMode;
 
   bool get() {
     return userMode;

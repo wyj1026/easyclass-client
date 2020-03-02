@@ -29,7 +29,7 @@ class _MessageState extends State<Message> {
           ),
           body: InfiniteListView<Homework>(
             onRetrieveData: (int page, List<Homework> items, bool refresh) async {
-              bool stuMode = Provider.of<UserMode>(context, listen: false).get()? false: true;
+              bool stuMode = Provider.of<UserMode>(context, listen: false).get()? true: false;
               if (stuMode) {
                 int lastLogin = await Storage.get_timestamp();
                 int near = DateTime
