@@ -11,6 +11,7 @@ import 'dart:math' as math;
 
 import 'class_detail.dart';
 import 'class_item.dart';
+import 'enter_class_before.dart';
 
 class Home extends StatefulWidget {
 
@@ -73,10 +74,9 @@ class _HomeeState extends State<Home> with TickerProviderStateMixin {
       ));
     }
     else if (option == "加入课程") {
-      bool res = await _showDialog(_name, TextInputType.number);
-      Class cas = await ClassClient.getById(_name.text);
+//      bool res = await _showDialog(_name, TextInputType.number);
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => new EnterClass(rec: cas,)
+          builder: (context) => new EnterClassBefore()
       ));
     }
   }

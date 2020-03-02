@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_class/common/user_view.dart';
 import 'package:easy_class/homework/new_homework_title.dart';
 import 'package:easy_class/models/class.dart';
@@ -109,6 +110,12 @@ class _ClassDetailState extends State<ClassDetail> {
                               "课程周数: " + widget.rec.class_duration,
                               textScaleFactor: 1.1,
                             ),
+                          ),
+                          CachedNetworkImage(
+                            imageUrl: widget.rec.avatar_url,
+                            fit: BoxFit.fill,
+                            placeholder: (context, url) =>null,
+                            errorWidget: (context, url, error) =>null,
                           ),
                           Image.network("https://bkimg.cdn.bcebos.com/pic/5fdf8db1cb134954e3e575b6584e9258d0094a6d?x-bce-process=image/watermark,g_7,image_d2F0ZXIvYmFpa2U4MA==,xp_5,yp_5"),
                         ],
