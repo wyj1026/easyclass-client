@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:easy_class/models/class.dart';
+import 'package:easy_class/models/class_role.dart';
 import 'package:easy_class/network/class.dart';
 import 'package:easy_class/network/file.dart';
+import 'package:easy_class/network/role.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +49,16 @@ class NewClassState extends State<NewClass> {
                 aclass.description = _description.text;
                 aclass.avatar_url = avatar_url;
                 aclass.school = _school.text;
-                ClassClient.addClass(aclass);
+                Class addClass = await ClassClient.addClass(aclass);
+
+                ClassRole classRole = new ClassRole();
+                classRole.classname = aclass.classname;
+                classRole.user_id = GlobalConfig.user.id;
+                classRole.class_id = addClass.id;
+                classRole.username = GlobalConfig.user.nickname;
+                classRole.role = "teacher";
+                classRole.school = aclass.school;
+                RoleClient.enterClass(classRole);
                 Navigator.of(context).pop();
               }
           ),
