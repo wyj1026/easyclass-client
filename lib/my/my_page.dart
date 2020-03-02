@@ -109,7 +109,6 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
-  bool _lights = false;
   bool _push = true;
 
   Widget settings() {
@@ -162,19 +161,10 @@ class _MyPageState extends State<MyPage> {
                   backgroundColor: new Color(0xFFB86A0D),
                 ),
               ),
-//                  GlobalConfig.dark == true
-//                      ? new Icon(Icons.wb_sunny, color: Colors.white):
-//                  new Icon(Icons.brightness_2, color: Colors.black),
-//              leading: new Icon(
-//                  GlobalConfig.dark == true
-//                      ? Icons.wb_sunny
-//                      : Icons.brightness_1,
-//                  color: Colors.white),
               trailing: CupertinoSwitch(
-                value: _lights,
+                value: GlobalConfig.dark,
                 onChanged: (bool value) {
                   setState(() {
-                    _lights = !_lights;
                     if (GlobalConfig.dark == true) {
                       GlobalConfig.themeData = new ThemeData(
                         primaryColor: Colors.white,
@@ -184,15 +174,14 @@ class _MyPageState extends State<MyPage> {
                           new Color(0xFFEBEBEB);
                       GlobalConfig.cardBackgroundColor = Colors.white;
                       GlobalConfig.fontColor = Colors.black54;
-                      GlobalConfig.dark = false;
                     } else {
                       GlobalConfig.themeData =
                           new ThemeData(brightness: Brightness.dark);
                       GlobalConfig.searchBackgroundColor = Colors.white10;
                       GlobalConfig.cardBackgroundColor = new Color(0xFF222222);
                       GlobalConfig.fontColor = Colors.white30;
-                      GlobalConfig.dark = true;
                     }
+                    GlobalConfig.dark =  !GlobalConfig.dark;
                   });
                 },
               ),

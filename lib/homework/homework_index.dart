@@ -16,8 +16,8 @@ class _HomeworkIndexState extends State<HomeworkIndex> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> tabs = Provider.of<UserMode>(context, listen: false).get()? teacher_tabs:user_tabs;
-    int base = Provider.of<UserMode>(context, listen: false).get()? 3: 0;
+    List<String> tabs = Provider.of<UserMode>(context, listen: false).get()? user_tabs: teacher_tabs;
+    int base = Provider.of<UserMode>(context, listen: false).get()? 0: 3;
     return DefaultTabController(
       length: 3,
       child: new Scaffold(
