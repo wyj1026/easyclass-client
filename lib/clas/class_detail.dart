@@ -3,14 +3,13 @@ import 'package:easy_class/common/user_view.dart';
 import 'package:easy_class/homework/new_homework_title.dart';
 import 'package:easy_class/models/class.dart';
 import 'package:easy_class/models/index.dart';
-import 'package:easy_class/util/common.dart';
+import 'package:easy_class/network/role.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import 'class_item.dart';
 
 DateFormat format = new DateFormat("yyyy-MM-dd hh:mm");
 
@@ -31,6 +30,13 @@ class _ClassDetailState extends State<ClassDetail> {
   FocusNode focusNode = new FocusNode();
   FocusScopeNode focusScopeNode;
 
+  @override
+  void initState() {
+    super.initState();
+    //初始化时即进行数据请求
+    getTeachers();
+  }
+
   Widget buildFloatingButton() {
     return new IconButton(
       onPressed: () {
@@ -43,13 +49,17 @@ class _ClassDetailState extends State<ClassDetail> {
     );
   }
 
+  getTeachers() async {
+    widget.teachers = await RoleClient.getAllTeacher(widget.rec.id);
+    print(widget.teachers.length);
+    setState(() {
+      widget.teachers;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    User u = new User();
-    u.nickname = "王老师";
-    widget.teachers.add(u);
-    bool stuMode =
-        Provider.of<UserMode>(context, listen: false).get() ? true : false;
+    bool stuMode = Provider.of<UserMode>(context, listen: false).get() ? true : false;
     return Scaffold(
       appBar: stuMode
           ? AppBar(
@@ -217,8 +227,8 @@ class _ClassDetailState extends State<ClassDetail> {
                               padding: const EdgeInsets.only(
                                   top: 0, left: 10, right: 10, bottom: 20),
                               child: Column(
-                                  children: widget.teachers
-                                      .map((item) => new GestureDetector(
+                                  children:
+                                      widget.teachers.map((item) => new GestureDetector(
                                             onTap: () {
                                               Navigator.of(context).push(
                                                   MaterialPageRoute(
@@ -228,9 +238,8 @@ class _ClassDetailState extends State<ClassDetail> {
                                                           )));
                                             },
                                             child: new Text(
-
-                                                item.nickname,
-                                              textScaleFactor: 1.1,
+                                                item.name,
+                                              textScaleFactor: 1.2,
                                               style: TextStyle(
 
                                                 fontWeight: FontWeight.bold,
