@@ -19,7 +19,8 @@ Homework _$HomeworkFromJson(Map<String, dynamic> json) {
     ..gmt_stop_upload = json['gmtStopUpload'] as num
     ..enable_communicate = json['enableCommunicate'] as bool
     ..enable_auto_judge = json['enableAutoJudge'] as bool
-    ..enable_judge_by_others = json['enableJudgeByOthers'] as bool;
+    ..enable_judge_by_others = json['enableJudgeByOthers'] as bool
+    ..tag = json['tag'] as num;
 }
 
 Map<String, dynamic> _$HomeworkToJson(Homework instance) => <String, dynamic>{
@@ -34,5 +35,6 @@ Map<String, dynamic> _$HomeworkToJson(Homework instance) => <String, dynamic>{
       'gmtStopUpload': instance.gmt_stop_upload,
       'enableCommunicate': instance.enable_communicate,
       'enableAutoJudge': instance.enable_auto_judge,
-      'enableJudgeByOthers': instance.enable_judge_by_others
+      'enableJudgeByOthers': instance.enable_judge_by_others,
+      'tag': instance.tag
     };

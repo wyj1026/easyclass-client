@@ -10,5 +10,6 @@
   "@JsonKey(name: 'gmtStopUpload') num": "gmt_stop_upload",
   "@JsonKey(name: 'enableCommunicate') bool": "enable_communicate",
   "@JsonKey(name: 'enableAutoJudge') bool": "enable_auto_judge",
-  "@JsonKey(name: 'enableJudgeByOthers') bool": "enable_judge_by_others"
+  "@JsonKey(name: 'enableJudgeByOthers') bool": "enable_judge_by_others",
+  "tag": 1
 }

@@ -18,6 +18,7 @@ class Homework {
     @JsonKey(name: 'enableCommunicate') bool enable_communicate;
     @JsonKey(name: 'enableAutoJudge') bool enable_auto_judge;
     @JsonKey(name: 'enableJudgeByOthers') bool enable_judge_by_others;
+    num tag;
     
     factory Homework.fromJson(Map<String,dynamic> json) => _$HomeworkFromJson(json);
     Map<String, dynamic> toJson() => _$HomeworkToJson(this);

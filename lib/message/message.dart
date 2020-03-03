@@ -1,14 +1,12 @@
-import 'package:easy_class/message/message_detail.dart';
+import 'package:easy_class/homework/homework_detail.dart';
 import 'package:easy_class/message/message_item.dart';
-import 'package:easy_class/models/class.dart';
 import 'package:easy_class/models/homework.dart';
 import 'package:easy_class/network/homework.dart';
-import 'package:easy_class/network/login.dart';
+import 'package:easy_class/network/question.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:easy_class/util/storage.dart';
 import 'package:flukit/flukit.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class Message extends StatefulWidget {
@@ -25,7 +23,7 @@ class _MessageState extends State<Message> {
     return new MaterialApp(
         home: new Scaffold(
           appBar: new AppBar(
-            title: new Text('课程'),
+            title: new Text('消息'),
           ),
           body: InfiniteListView<Homework>(
             onRetrieveData: (int page, List<Homework> items, bool refresh) async {
@@ -39,6 +37,8 @@ class _MessageState extends State<Message> {
                     .getHomeworkAfterDate(lastLogin);
                 List<Homework> nearHomeworks = await HomeworkClient
                     .getHomeworkNearDate(near);
+                newHomeworks = newHomeworks.map((f) {f.tag=1; return f;}).toList();
+                nearHomeworks = nearHomeworks.map((f) {f.tag=2; return f;}).toList();
                 items.addAll(nearHomeworks);
                 items.addAll(newHomeworks);
                 items.sort((a, b) =>
@@ -47,6 +47,7 @@ class _MessageState extends State<Message> {
               else {
                 List<Homework> stopped = await HomeworkClient
                     .getHomeworkStoppedUpload(DateTime.now().millisecondsSinceEpoch);
+                stopped = stopped.map((f) {f.tag=3; return f;}).toList();
                 items.addAll(stopped);
                 items.sort((a, b) =>
                     a.gmt_stop_upload.compareTo(b.gmt_stop_upload));
@@ -56,10 +57,20 @@ class _MessageState extends State<Message> {
             itemBuilder: (List<Homework> list, int index, BuildContext ctx) {
               return GestureDetector(
                 child: MessageItem(list[index]),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => new MessageDetail(
-                      rec: list[index],
-                    ))),
+                onTap: () async {
+                  var qs = await QuestionClient.getQuestionsByHomeworkId(list[index].id);
+                  var stat;
+                  if (list[index].tag == 1 || list[index].tag == 2) {
+                    stat = 1;
+                  }
+                  else {
+                    stat = 3;
+                  }
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => HomeworkDetail.get(stat, list[index], qs)
+
+                  ));
+    }
               );
             },
           ),
