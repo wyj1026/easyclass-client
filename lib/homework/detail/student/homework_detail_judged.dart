@@ -23,6 +23,12 @@ class HomeworkJudged extends StatefulWidget {
   }
 }
 
+TextStyle hintr = new TextStyle(color: Colors.red);
+TextStyle hintb = new TextStyle(color: Colors.blue);
+TextStyle title = new TextStyle(fontSize: 18);
+TextStyle value = new TextStyle(fontSize: 16);
+
+
 class _HomeworkJudgedState extends State<HomeworkJudged> {
   List<TextEditingController> _controllers = new List();
   List<List<bool>> _check = new List();
@@ -76,64 +82,64 @@ class _HomeworkJudgedState extends State<HomeworkJudged> {
                 constraints: BoxConstraints(minHeight: double.infinity),
                 child: Column(
                   children: <Widget>[
-                    HomeworkItem(widget.homework),
                     Container(
-                      color: Colors.amber,
-                      child: new Text(widget.homework.homework_title),
-                      margin: const EdgeInsets.all(16.0),
+                      constraints: BoxConstraints(minWidth: double.infinity),
+                      margin: const EdgeInsets.fromLTRB(0, 2, 0, 5),
+                      padding: const EdgeInsets.only(top: 0.0, bottom: 15.0),
+                      color: GlobalConfig.cardBackgroundColor,
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Container(
+                            margin: const EdgeInsets.fromLTRB(20, 15, 0, 5),
+                            child: Text.rich(TextSpan(children: [
+                              TextSpan(
+                                text: "* ",
+                                style: hintr,
+                              ),
+                              TextSpan(
+                                text: "作业标题",
+                                style: hintb,
+                              ),
+                            ])),
+                          ),
+                          new Container(
+                            child: Text(
+                              widget.homework.homework_title,
+                              style: title,
+                            ),
+                            margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          ),
+                        ],
+                      ),
                     ),
-                    Flexible(
-                        child: ListView(
-                            children: _questions
-                                .map((q) => new Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        ExpansionTile(
-                                          title: new Text(
-                                              (_questions.indexOf(q) + 1)
-                                                      .toString() +
-                                                  ". " +
-                                                  q.question),
-                                          children: <Widget>[
-                                            new Container(
-//                            alignment: Alignment(-1, 1),
-                                              child: new Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Offstage(
-                                                    child: new TextField(
-                                                      controller: _controllers[_questions.indexOf(q)],
-                                                      maxLines: 3,
-                                                      autofocus: false,
-                                                      decoration: new InputDecoration(
-                                                          hintText: "请输入答案...", hintStyle: new TextStyle()),
-                                                    ),
-                                                    offstage: q.is_objective,
-                                                  ),
-                                                  Offstage(
-                                                    child: Column(
-                                                      children: get(q),
-                                                    ),
-                                                    offstage: !q.is_objective,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ))
-                                .toList())),
+                    Expanded(
+                      child: Container(
+                          color: GlobalConfig.cardBackgroundColor,
+                          child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  new Container(
+                                    margin: const EdgeInsets.fromLTRB(20, 15, 0, 5),
+                                    child: Text.rich(TextSpan(children: [
+                                      TextSpan(
+                                        text: "* ",
+                                        style: hintr,
+                                      ),
+                                      TextSpan(
+                                        text: "题目列表",
+                                        style: hintb,
+                                      ),
+                                    ])),
+                                  ),
+                                  getQuestions(),
+                                ],
+                              ))),
+                    ),
                   ],
                 )),
-        bottomNavigationBar: RaisedButton(
-          color: Colors.white,
-          child: Text("去回答"),
-          onPressed: () {},
-        ));
+        bottomNavigationBar: null);
   }
 
   List<Widget> get(Question question) {
@@ -162,6 +168,68 @@ class _HomeworkJudgedState extends State<HomeworkJudged> {
               ],
             )))
         .toList();
+  }
+
+  getQuestions() {
+    return Container(
+        margin: const EdgeInsets.fromLTRB(0, 2, 0, 5),
+        padding: const EdgeInsets.only(top: 0.0, bottom: 15.0),
+        child: ListView(
+            shrinkWrap: true,
+            children: _questions
+                .map((q) => new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ExpansionTile(
+                  title: new Text(
+                    (_questions.indexOf(q) + 1).toString() +
+                        ". " +
+                        q.question,
+                    style: title,
+                  ),
+                  children: <Widget>[
+                    new Container(
+                        child: Stack(
+                          children: <Widget>[
+                            Offstage(
+                              child: Column(
+                                children: get(q),
+                              ),
+                              offstage: !q.is_objective,
+                            ),
+                            Offstage(
+                              child: Container(
+                                padding: const EdgeInsets.only(
+                                    left: 15.0, bottom: 15.0, right: 15),
+                                alignment: Alignment(-1.0, 0),
+                                child: Theme(
+                                  data: new ThemeData(
+                                      primaryColor: Colors.lightBlueAccent,
+                                      hintColor: Colors.black),
+                                  child: new TextField(
+                                    decoration: InputDecoration(
+                                        hintText: "请输入答案...",
+                                        contentPadding:
+                                        EdgeInsets.all(10.0),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(10.0),
+                                        )),
+                                    controller:
+                                    _controllers[_questions.indexOf(q)],
+                                    maxLines: 4,
+                                  ),
+                                ),
+                              ),
+                              offstage: q.is_objective,
+                            )
+                          ],
+                        )),
+                  ],
+                ),
+              ],
+            ))
+                .toList()));
   }
 
 }
