@@ -20,14 +20,12 @@ class GlobalConfig {
 }
 
 class UserMode extends ChangeNotifier {
-  bool userMode = GlobalConfig.stuMode;
 
   bool get() {
-    return userMode;
+    return GlobalConfig.stuMode;
   }
 
   void change() {
-    userMode = !userMode;
     notifyListeners();
   }
 }
