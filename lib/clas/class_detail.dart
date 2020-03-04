@@ -127,7 +127,6 @@ class _ClassDetailState extends State<ClassDetail> {
                             placeholder: (context, url) =>null,
                             errorWidget: (context, url, error) =>null,
                           ),
-                          Image.network("https://bkimg.cdn.bcebos.com/pic/5fdf8db1cb134954e3e575b6584e9258d0094a6d?x-bce-process=image/watermark,g_7,image_d2F0ZXIvYmFpa2U4MA==,xp_5,yp_5"),
                         ],
                       ),
                     ),

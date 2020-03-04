@@ -4,6 +4,7 @@ import 'package:easy_class/network/homework.dart';
 import 'package:easy_class/network/question.dart';
 import 'package:easy_class/question/new_nobj_question.dart';
 import 'package:easy_class/question/new_obj_question.dart';
+import 'package:easy_class/util/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -21,6 +22,12 @@ class NewHomeworkWithTitle extends StatefulWidget {
   }
 }
 
+TextStyle hintr = new TextStyle(color: Colors.red);
+TextStyle hintb = new TextStyle(color: Colors.blue);
+TextStyle title = new TextStyle(fontSize: 18);
+TextStyle value = new TextStyle(fontSize: 16);
+
+
 class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
     with TickerProviderStateMixin {
   FocusNode focusNode = new FocusNode();
@@ -29,6 +36,7 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
   Homework homework;
 
   _NewHomeworkWithTitleState(this.homework);
+
   List<Question> questions = new List();
 
   List<Widget> get(Question question) {
@@ -38,7 +46,6 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
         .map((option) => new Container(
 //            margin: const EdgeInsets.all(16.0),
             alignment: Alignment(-1.0, 1),
-            color: Colors.blue,
             child: Row(
               children: <Widget>[
                 Checkbox(
@@ -46,7 +53,7 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
                   onChanged: (value) {},
                 ),
                 new Expanded(
-                  child: Text(option),
+                  child: Text(option, style: value,),
                 ),
               ],
             )))
@@ -86,44 +93,99 @@ class _NewHomeworkWithTitleState extends State<NewHomeworkWithTitle>
           child: Column(
             children: <Widget>[
               Container(
-                color: Colors.amber,
-                child: new Text(homework.homework_title),
-                margin: const EdgeInsets.all(16.0),
+                constraints: BoxConstraints(minWidth: double.infinity),
+                margin: const EdgeInsets.fromLTRB(0, 2, 0, 5),
+                padding: const EdgeInsets.only(top: 0.0, bottom: 15.0),
+                color: GlobalConfig.cardBackgroundColor,
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Container(
+                      margin: const EdgeInsets.fromLTRB(20, 15, 0, 5),
+                      child: Text.rich(TextSpan(children: [
+                        TextSpan(
+                          text: "* ",
+                          style: hintr,
+                        ),
+                        TextSpan(
+                          text: "作业标题",
+                          style: hintb,
+                        ),
+                      ])),
+                    ),
+                    new Container(
+                      child: Text(
+                        widget.homework.homework_title, style: title,
+                      ),
+                      margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    ),
+                  ],
+                ),
               ),
               Flexible(
-                  child: ListView(
-                      children: questions
-                          .map((q) => new Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  ExpansionTile(
-                                    title: new Text(
-                                        (questions.indexOf(q) + 1).toString() +
-                                            ". " +
-                                            q.question),
-                                    children: <Widget>[
-                                      new Container(
-//                            alignment: Alignment(-1, 1),
-                                        color: Colors.red,
-                                        child: new Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                child: Container(
+                    color: GlobalConfig.cardBackgroundColor,
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Container(
+                      margin: const EdgeInsets.fromLTRB(20, 15, 0, 5),
+                      child: Text.rich(TextSpan(children: [
+                        TextSpan(
+                          text: "* ",
+                          style: hintr,
+                        ),
+                        TextSpan(
+                          text: "题目列表",
+                          style: hintb,
+                        ),
+                      ])),
+                    ),
+                    Container(
+                        margin: const EdgeInsets.fromLTRB(0, 2, 0, 5),
+                        padding: const EdgeInsets.only(top: 0.0, bottom: 15.0),
+                        child: ListView(
+                            shrinkWrap: true,
+                            children: questions
+                                .map((q) => new Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        ExpansionTile(
+                                          title: new Text(
+                                              (questions.indexOf(q) + 1)
+                                                      .toString() +
+                                                  ". " +
+                                                  q.question, style: title,),
                                           children: <Widget>[
-                                            Offstage(
-                                              child: Column(
-                                                children: get(q),
-                                              ),
-                                              offstage: !q.is_objective,
+                                            new Container(
+                                              child: Stack(
+                                                children: <Widget>[
+                                                  Offstage(
+                                                    child: Column(
+                                                      children: get(q),
+                                                    ),
+                                                    offstage: !q.is_objective,
+                                                  ),
+                                                  Offstage(
+                                                    child: Container(
+                                                      padding: const EdgeInsets.only(left: 15.0, bottom: 15.0),
+                                                      alignment: Alignment(-1.0, 0),
+                                                      child: Text(q.answer["options"][0], style: value,),
+                                                    ),
+                                                    offstage: q.is_objective,
+                                                  )
+                                                ],
+                                              )
                                             ),
                                           ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ))
-                          .toList())),
+                                      ],
+                                    ))
+                                .toList()))
+                  ],
+                )),
+              ),
             ],
           )),
       bottomNavigationBar: null,

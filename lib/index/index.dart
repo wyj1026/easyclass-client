@@ -183,7 +183,7 @@ class _IndexState extends State<Index> with TickerProviderStateMixin{
     if (showedNotice) return;
     showedNotice = true;
     bool stuMode = await Storage.getUserMode();
-    if (stuMode) {
+    if (stuMode != null && stuMode) {
       int lastLogin = await Storage.get_timestamp();
       int near = DateTime
           .now()

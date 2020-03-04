@@ -1,4 +1,5 @@
 import 'package:easy_class/models/index.dart';
+import 'package:easy_class/util/config.dart';
 import 'package:flutter/material.dart';
 
 class NewNobjQuestionPage extends StatefulWidget {
@@ -19,7 +20,7 @@ class NewNobjQuestionPageState extends State<NewNobjQuestionPage> {
           actions: <Widget>[
             FlatButton(
               textColor: Colors.white,
-              onPressed: ()  {
+              onPressed: () {
                 //add_record(Main.user_name, Main.avatarUrl, _controller.text, images),
                 Question q = new Question();
                 q.question = _title.text;
@@ -42,33 +43,86 @@ class NewNobjQuestionPageState extends State<NewNobjQuestionPage> {
           ],
         ),
         body: new SingleChildScrollView(
+            child: Container(
+              color: GlobalConfig.cardBackgroundColor,
           child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               new Container(
-                color: Colors.amber,
-                child: new TextField(
-                  controller: _title,
-                  maxLines: 3,
-                  autofocus: true,
-                  decoration: new InputDecoration(
-                      hintText: "请输入题目...", hintStyle: new TextStyle()),
+                margin: const EdgeInsets.fromLTRB(20, 15, 0, 5),
+                child: Text.rich(TextSpan(children: [
+                  TextSpan(
+                    text: "* ",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  TextSpan(
+                    text: "题目",
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ])),
+              ),
+              new Container(
+//                color: Colors.amber,
+                child: Theme(
+                  data: new ThemeData(
+                      primaryColor: Colors.lightBlueAccent,
+                      hintColor: Colors.black),
+                  child: new TextField(
+                    decoration: InputDecoration(
+                        hintText: "请输入题目...",
+                        contentPadding: EdgeInsets.all(10.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+//            borderSide: BorderSide(color: Colors.red, width: 3.0, style: BorderStyle.solid)//没什么卵效果
+                        )),
+                    controller: _title,
+                    maxLines: 4,
+                    autofocus: true,
+                  ),
                 ),
                 margin: const EdgeInsets.all(16.0),
               ),
               new Container(
-                color: Colors.amber,
-                margin: const EdgeInsets.all(16.0),
-                  child: new TextField(
-                maxLines: 6,
-                controller: _answer,
-                decoration: new InputDecoration(
-                    hintText: '请输入参考答案...', hintStyle: new TextStyle(), border: InputBorder.none),
-              )),
+                margin: const EdgeInsets.fromLTRB(20, 15, 0, 5),
+                child: Text.rich(TextSpan(children: [
+                  TextSpan(
+                    text: "* ",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  TextSpan(
+                    text: "题目",
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ])),
+              ),
+              new Container(
+//                color: Colors.amber,
+                  margin: const EdgeInsets.all(16.0),
+                  child: Theme(
+                    data: new ThemeData(
+                        primaryColor: Colors.lightBlueAccent,
+                        hintColor: Colors.black),
+                    child: new TextField(
+                      decoration: InputDecoration(
+                          hintText: "请输入参考答案...",
+                          contentPadding: EdgeInsets.all(10.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+//            borderSide: BorderSide(color: Colors.red, width: 3.0, style: BorderStyle.solid)//没什么卵效果
+                          )),
+                      controller: _answer,
+                      maxLines: 6,
+                      autofocus: true,
+                    ),
+                  )),
+              Divider(),
               ListTile(
                 leading: new Container(
                     margin: const EdgeInsets.only(bottom: 6.0),
-                    child: new Text("分值",)
-                ),
+                    child: new Text(
+                      "分值",
+                        style: TextStyle(fontSize: 16),
+                    )),
                 trailing: new Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -78,17 +132,14 @@ class NewNobjQuestionPageState extends State<NewNobjQuestionPage> {
                         onPressed: () async {
                           await _showDialog(_duration, TextInputType.number);
                           setState(() {});
-                        }
-                    ),
+                        }),
                   ],
                 ),
               ),
             ],
           ),
-        ));
+        )));
   }
-
-
 
   _showDialog(TextEditingController controller, TextInputType kbt) async {
     await showDialog<Null>(
@@ -123,12 +174,12 @@ class NewNobjQuestionPageState extends State<NewNobjQuestionPage> {
                     Navigator.pop(context);
                   })
             ],
-          ),);
+          ),
+        );
       },
     );
   }
 }
-
 
 class _SystemPadding extends StatelessWidget {
   final Widget child;

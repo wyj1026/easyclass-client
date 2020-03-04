@@ -11,7 +11,7 @@ class Storage {
       User u = User.fromJson(json.decode(userString));
       preferences.setInt("login_timestamp", DateTime.now().millisecondsSinceEpoch);
       GlobalConfig.user = u;
-      GlobalConfig.stuMode = preferences.getBool("stuMode");
+      GlobalConfig.stuMode = preferences.getBool("stuMode") == null? true: preferences.getBool("stuMode");
       return true;
     }
     else{
