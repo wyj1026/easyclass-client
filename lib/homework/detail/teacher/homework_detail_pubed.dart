@@ -47,7 +47,7 @@ class _HomeworkDetailPubedState extends State<HomeworkDetailPubed> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(''),
+          title: Text('作业'),
         ),
         body: ConstrainedBox(
             constraints: BoxConstraints(minHeight: double.infinity),
@@ -128,12 +128,10 @@ class _HomeworkDetailPubedState extends State<HomeworkDetailPubed> {
                 Checkbox(
                   value: _check[_questions.indexOf(question)]
                       [options.indexOf(option)],
-//                  onChanged: (value) {
-//                    setState(() {
-//                      _check[_questions.indexOf(question)]
-//                          [options.indexOf(option)] = value;
-//                    });
-//                  },
+                  onChanged: (value) {
+                    setState(() {
+                    });
+                  },
                 ),
                 new Expanded(
                   child: Text(option),
@@ -162,7 +160,8 @@ class _HomeworkDetailPubedState extends State<HomeworkDetailPubed> {
                           ),
                           children: <Widget>[
                             new Container(
-                                child: Stack(
+                                child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Offstage(
                                   child: Column(
@@ -172,27 +171,15 @@ class _HomeworkDetailPubedState extends State<HomeworkDetailPubed> {
                                 ),
                                 Offstage(
                                   child: Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 15.0, bottom: 15.0, right: 15),
-                                    alignment: Alignment(-1.0, 0),
-                                    child: Theme(
-                                      data: new ThemeData(
-                                          primaryColor: Colors.lightBlueAccent,
-                                          hintColor: Colors.black),
-                                      child: new TextField(
-                                        decoration: InputDecoration(
-                                            hintText: "请输入答案...",
-                                            contentPadding:
-                                                EdgeInsets.all(10.0),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            )),
-                                        controller:
-                                            _controllers[_questions.indexOf(q)],
-                                        maxLines: 4,
-                                      ),
-                                    ),
+                                    constraints:  BoxConstraints(minWidth: double.infinity),
+                                    padding: EdgeInsets.only(
+                                        left: 15,
+                                        top: 10,
+                                        bottom: 10,
+                                        right: 10),
+//                                color: Colors.red,
+                                    child:
+                                        Text("参考答案: " + q.answer["options"][0]),
                                   ),
                                   offstage: q.is_objective,
                                 )
