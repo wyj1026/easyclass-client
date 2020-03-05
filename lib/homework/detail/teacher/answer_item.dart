@@ -20,60 +20,47 @@ class AnswerItem extends StatefulWidget {
 }
 
 class _AnswerItemState extends State<AnswerItem> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-      margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+      color: GlobalConfig.cardBackgroundColor,
+      margin: EdgeInsets.fromLTRB(0, 2, 0, 6),
       child: Container(
-        color: Colors.grey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ListTile(
-              dense: true,
-//              leading: gmAvatar(
-//                widget.homework.,
-//                width: 40.0,
-//                borderRadius: BorderRadius.circular(20),
-//              ),
-              title: Text(
-                widget.user.id.toString() + widget.user.name,
-                textScaleFactor: 1.1,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ListTile(
+            dense: true,
+            title: Text(
+              "学生姓名: " + widget.user.name,
+              textScaleFactor: 1.3,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(top: 0, left: 10, bottom: 10),
+            child: Row(
+              children: <Widget>[
+                Container(
+//              color: Colors.red,
+                  padding: const EdgeInsets.only(
+                      top: 0, left: 10, right: 10, bottom: 0),
+                  child: Text(
+                    "昵称: " + widget.user.nickname,
+                  ),
                 ),
-              ),
-              subtitle: Text(
-                "123",
-                textScaleFactor: 0.9,
-              ),
+                Expanded(
+//                  color: Colors.red,
+                    child: Align(
+                        alignment: Alignment(0.8, 0.0),
+                        child: Text("邮箱: " + widget.user.email)))
+              ],
             ),
-            Container(
-              color: Colors.red,
-              padding: const EdgeInsets.only(top: 0, left: 10, right: 10),
-              child: Text(
-                widget.user.nickname,
-              ),
-            ),
-//                Positioned(
-//                  top: 150,
-//                  child:
-//                  SizedBox(
-//                    width: MediaQuery.of(context).size.width,
-//                    height: MediaQuery.of(context).size.width,
-//                    child: buildGridView(),
-//                  ),
-//                ),
-
-//                Padding(
-//                  padding: const EdgeInsets.only(top: 5),
-//                  child: _buildBottom(),
-//                )
-          ],
-        ),
-      ),
+          ),
+        ],
+      )),
     );
   }
 }

@@ -1,26 +1,25 @@
-import 'package:easy_class/homework/homework_item.dart';
 import 'package:easy_class/models/answer.dart';
-import 'package:easy_class/models/class.dart';
 import 'package:easy_class/models/homework.dart';
 import 'package:easy_class/models/question.dart';
-import 'package:easy_class/network/answer.dart';
-import 'package:easy_class/network/question.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class HomeworkDetailPubed extends StatefulWidget {
-  HomeworkDetailPubed(
-      {Key key, @required this.homework, @required this.questions, this.stat})
+class HomeworkAnswerDetailJudged extends StatefulWidget {
+  HomeworkAnswerDetailJudged(
+      {Key key,
+      @required this.homework,
+      @required this.questions,
+      @required this.answers})
       : super(key: key);
 
   final Homework homework;
   final List<Question> questions;
-  final int stat;
+  final List<Answer> answers;
 
   @override
-  _HomeworkDetailPubedState createState() {
-    return new _HomeworkDetailPubedState(questions);
+  _HomeworkAnswerDetailJudgedState createState() {
+    return new _HomeworkAnswerDetailJudgedState(questions, answers);
   }
 }
 
@@ -29,16 +28,19 @@ TextStyle hintb = new TextStyle(color: Colors.blue);
 TextStyle title = new TextStyle(fontSize: 18);
 TextStyle value = new TextStyle(fontSize: 16);
 
-class _HomeworkDetailPubedState extends State<HomeworkDetailPubed> {
-  List<TextEditingController> _controllers = new List();
-  List<List<bool>> _check = new List();
+class _HomeworkAnswerDetailJudgedState
+    extends State<HomeworkAnswerDetailJudged> {
   List<Question> _questions;
+  Map<int, Answer> _questionAnswermap = new Map();
 
-  _HomeworkDetailPubedState(List<Question> questions) {
-    print("Questions: " + questions.length.toString());
+  _HomeworkAnswerDetailJudgedState(
+      List<Question> questions, List<Answer> answers) {
     for (int i = 0; i < questions.length; i++) {
-      _controllers.add(new TextEditingController());
-      _check.add(new List());
+      for (int j = 0; j < answers.length; j++) {
+        if (answers[j].homework_question_id == questions[i].id) {
+          _questionAnswermap[questions[i].id] = answers[j];
+        }
+      }
     }
     _questions = questions;
   }
@@ -46,9 +48,7 @@ class _HomeworkDetailPubedState extends State<HomeworkDetailPubed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(''),
-        ),
+        appBar: AppBar(),
         body: ConstrainedBox(
             constraints: BoxConstraints(minHeight: double.infinity),
             child: Column(
@@ -115,9 +115,8 @@ class _HomeworkDetailPubedState extends State<HomeworkDetailPubed> {
 
   List<Widget> get(Question question) {
     List<String> options = new List<String>.from(question.answer["options"]);
-    List<bool> content = new List<bool>.from(question.answer["content"]);
-    int index = _questions.indexOf(question);
-    _check[index].addAll(content);
+    List<bool> content = new List<bool>.from(
+        _questionAnswermap[question.id].student_question_answer);
 
     return options
         .map((option) => new Container(
@@ -126,14 +125,12 @@ class _HomeworkDetailPubedState extends State<HomeworkDetailPubed> {
             child: Row(
               children: <Widget>[
                 Checkbox(
-                  value: _check[_questions.indexOf(question)]
-                      [options.indexOf(option)],
-//                  onChanged: (value) {
-//                    setState(() {
-//                      _check[_questions.indexOf(question)]
-//                          [options.indexOf(option)] = value;
-//                    });
-//                  },
+                  value: content[options.indexOf(option)],
+                  onChanged: (value) {
+                    setState(() {
+                      content[options.indexOf(option)] = value;
+                    });
+                  },
                 ),
                 new Expanded(
                   child: Text(option),
@@ -188,8 +185,6 @@ class _HomeworkDetailPubedState extends State<HomeworkDetailPubed> {
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
                                             )),
-                                        controller:
-                                            _controllers[_questions.indexOf(q)],
                                         maxLines: 4,
                                       ),
                                     ),
