@@ -1,10 +1,8 @@
-import 'package:easy_class/homework/homework_item.dart';
+import 'package:easy_class/clas/home.dart';
 import 'package:easy_class/models/answer.dart';
-import 'package:easy_class/models/class.dart';
 import 'package:easy_class/models/homework.dart';
 import 'package:easy_class/models/question.dart';
 import 'package:easy_class/network/answer.dart';
-import 'package:easy_class/network/question.dart';
 import 'package:easy_class/util/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,26 +17,40 @@ class HomeworkNotJudgedStudent extends StatefulWidget {
 
   @override
   _HomeworkNotJudgedStudentState createState() {
-    return new _HomeworkNotJudgedStudentState(questions);
+       return _HomeworkNotJudgedStudentState(questions, homework);
   }
 }
+
 TextStyle hintr = new TextStyle(color: Colors.red);
 TextStyle hintb = new TextStyle(color: Colors.blue);
 TextStyle title = new TextStyle(fontSize: 18);
 TextStyle value = new TextStyle(fontSize: 16);
 
 class _HomeworkNotJudgedStudentState extends State<HomeworkNotJudgedStudent> {
-  List<TextEditingController> _controllers = new List();
-  List<List<bool>> _check = new List();
-  List<Question> _questions;
+  List<Question> _questions = new List();
+  Map<int, Answer> _questionAnswermap = new Map();
 
-  _HomeworkNotJudgedStudentState(List<Question> questions) {
-    print("Questions: "+ questions.length.toString());
+  _HomeworkNotJudgedStudentState(List<Question> questions, Homework homework) {
+    getData(questions, homework);
+  }
+
+  getData(List<Question> questions, Homework homework) async {
+    Map<int, Answer> questionAnswermap = new Map();
+    List<Answer> answers = await AnswerClient.getAnswersByHomeworkIdAndUserId(
+        homework.id, GlobalConfig.user.id);
     for (int i = 0; i < questions.length; i++) {
-      _controllers.add(new TextEditingController());
-      _check.add(new List());
+      for (int j = 0; j < answers.length; j++) {
+        if (answers[j].homework_question_id == questions[i].id) {
+          questionAnswermap[questions[i].id] = answers[j];
+          print(answers[j].toJson().toString());
+        }
+      }
     }
-    _questions = questions;
+
+    setState(() {
+      _questionAnswermap = questionAnswermap;
+      _questions = questions;
+    });
   }
 
   @override
@@ -47,32 +59,6 @@ class _HomeworkNotJudgedStudentState extends State<HomeworkNotJudgedStudent> {
         appBar: AppBar(
           title: Text(''),
           actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.check),
-                onPressed: () async {
-                  List<Answer> answers = _questions.map((q) {
-                    Answer answer = new Answer();
-                    answer.classname = widget.homework.classname;
-                    answer.class_id = widget.homework.class_id;
-                    answer.homework_id = widget.homework.id;
-                    answer.user_id = GlobalConfig.user.id;
-                    answer.username = GlobalConfig.user.name;
-                    answer.homework_question_id = q.id;
-                    answer.student_question_answer = new List();
-                    int index = _questions.indexOf(q);
-                    if (q.is_objective) {
-                      answer.student_question_answer.addAll(_check[index]);
-                    }
-                    else {
-                      answer.student_question_answer.add(_controllers[index].text);
-                    }
-                    answer.gmt_upload = DateTime.now().millisecondsSinceEpoch;
-                    return answer;
-                  }).toList();
-                  AnswerClient.addAnswers(answers);
-                  Navigator.of(context).pop();
-                }
-            ),
           ],
         ),
         body:
@@ -142,20 +128,18 @@ class _HomeworkNotJudgedStudentState extends State<HomeworkNotJudgedStudent> {
   }
 
   List<Widget> get(Question question) {
+    if (!question.is_objective) return <Widget>[];
     List<String> options = new List<String>.from(question.answer["options"]);
-    List<bool> content = new List<bool>.from(question.answer["content"]);
-    int index = _questions.indexOf(question);
-    _check[index].addAll(content);
+    List<bool> answer = new List<bool>.from(_questionAnswermap[question.id].student_question_answer);
 
     return options
         .map((option) => new Container(
 //            margin: const EdgeInsets.all(16.0),
             alignment: Alignment(-1.0, 1),
-            color: Colors.blue,
             child: Row(
               children: <Widget>[
                 Checkbox(
-                  value: _check[_questions.indexOf(question)][options.indexOf(option)],
+                  value: answer[options.indexOf(option)],
                   onChanged: (value) {
                     setState(() {
                     });
@@ -201,24 +185,7 @@ class _HomeworkNotJudgedStudentState extends State<HomeworkNotJudgedStudent> {
                                 padding: const EdgeInsets.only(
                                     left: 15.0, bottom: 15.0, right: 15),
                                 alignment: Alignment(-1.0, 0),
-                                child: Theme(
-                                  data: new ThemeData(
-                                      primaryColor: Colors.lightBlueAccent,
-                                      hintColor: Colors.black),
-                                  child: new TextField(
-                                    decoration: InputDecoration(
-                                        hintText: "请输入答案...",
-                                        contentPadding:
-                                        EdgeInsets.all(10.0),
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(10.0),
-                                        )),
-                                    controller:
-                                    _controllers[_questions.indexOf(q)],
-                                    maxLines: 4,
-                                  ),
-                                ),
+                                child: Text("你的回答: " + _questionAnswermap[q.id].student_question_answer[0].toString()),
                               ),
                               offstage: q.is_objective,
                             )
