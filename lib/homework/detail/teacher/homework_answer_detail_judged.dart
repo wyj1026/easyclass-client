@@ -114,6 +114,7 @@ class _HomeworkAnswerDetailJudgedState
   }
 
   List<Widget> get(Question question) {
+    if (!question.is_objective) return <Widget>[];
     List<String> options = new List<String>.from(question.answer["options"]);
     List<bool> content = new List<bool>.from(
         _questionAnswermap[question.id].student_question_answer);
@@ -172,22 +173,7 @@ class _HomeworkAnswerDetailJudgedState
                                     padding: const EdgeInsets.only(
                                         left: 15.0, bottom: 15.0, right: 15),
                                     alignment: Alignment(-1.0, 0),
-                                    child: Theme(
-                                      data: new ThemeData(
-                                          primaryColor: Colors.lightBlueAccent,
-                                          hintColor: Colors.black),
-                                      child: new TextField(
-                                        decoration: InputDecoration(
-                                            hintText: "请输入答案...",
-                                            contentPadding:
-                                                EdgeInsets.all(10.0),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            )),
-                                        maxLines: 4,
-                                      ),
-                                    ),
+                                    child: Text("学生答案: " + _questionAnswermap[q.id].student_question_answer[0].toString()),
                                   ),
                                   offstage: q.is_objective,
                                 )
